@@ -11,6 +11,7 @@ import {
 } from "@webiny/commodo-graphql";
 
 const articleFetcher = ctx => ctx.models.Article;
+const categoryFetcher = ctx => ctx.models.Category;
 
 /**
  * As the name itself suggests, the "graphql-schema" plugin enables us to define our service's GraphQL schema.
@@ -22,7 +23,7 @@ const articleFetcher = ctx => ctx.models.Article;
  */
 const plugin: GraphQLSchemaPlugin = {
     type: "graphql-schema",
-    name: "graphql-schema-articles",
+    name: "graphql-schema-tinynews",
     schema: {
         typeDefs: gql`
             type ArticleDeleteResponse {
@@ -81,7 +82,7 @@ const plugin: GraphQLSchemaPlugin = {
             }
 
             input ArticleListWhere {
-                title: String
+                headline: String
             }
 
             input ArticleListSort {
@@ -120,22 +121,100 @@ const plugin: GraphQLSchemaPlugin = {
                 deleteArticle(id: ID!): ArticleDeleteResponse
             }
 
+            type CategoryDeleteResponse {
+                data: Boolean
+                error: CategoryError
+            }
+
+            type CategoryCursors {
+                next: String
+                previous: String
+            }
+
+            type CategoryListMeta {
+                cursors: CategoryCursors
+                hasNextPage: Boolean
+                hasPreviousPage: Boolean
+                totalCount: Int
+            }
+
+            type CategoryError {
+                code: String
+                message: String
+                data: JSON
+            }
+
+            type Category {
+                id: ID
+                title: String
+                slug: String
+            }
+
+            input CategoryInput {
+                id: ID
+                title: String!
+                slug: String
+            }
+
+            input CategoryListWhere {
+                title: String
+            }
+
+            input CategoryListSort {
+                title: Int
+            }
+
+            type CategoryResponse {
+                data: Category
+                error: CategoryError
+            }
+
+            type CategoryListResponse {
+                data: [Category]
+                meta: CategoryListMeta
+                error: CategoryError
+            }
+
+            type CategoryQuery {
+                getCategory(id: ID): CategoryResponse
+
+                listCategorys(
+                    where: CategoryListWhere
+                    sort: CategoryListSort
+                    limit: Int
+                    after: String
+                    before: String
+                ): CategoryListResponse
+            }
+
+            type CategoryMutation {
+                createCategory(data: CategoryInput!): CategoryResponse
+
+                updateCategory(id: ID!, data: CategoryInput!): CategoryResponse
+
+                deleteCategory(id: ID!): CategoryDeleteResponse
+            }
+
             extend type Query {
                 articles: ArticleQuery
+                categories: CategoryQuery
             }
 
             extend type Mutation {
                 articles: ArticleMutation
+                categories: CategoryMutation
             }
         `,
         resolvers: {
             Query: {
                 // Needs to be here, otherwise the resolvers below cannot return any result.
-                articles: emptyResolver
+                articles: emptyResolver,
+                categories: emptyResolver
             },
             Mutation: {
                 // Needs to be here, otherwise the resolvers below cannot return any result.
-                articles: emptyResolver
+                articles: emptyResolver,
+                categories: emptyResolver
             },
             ArticleQuery: {
                 // With the generic resolvers, we also rely on the "hasScope" helper function from the
@@ -149,6 +228,19 @@ const plugin: GraphQLSchemaPlugin = {
                 createArticle: hasScope("articles:create")(resolveCreate(articleFetcher)),
                 updateArticle: hasScope("articles:update")(resolveUpdate(articleFetcher)),
                 deleteArticle: hasScope("articles:delete")(resolveDelete(articleFetcher))
+            },
+            CategoryQuery: {
+                // With the generic resolvers, we also rely on the "hasScope" helper function from the
+                // "@webiny/api-security" package, in order to define the required security scopes (permissions).
+                getCategory: hasScope("categories:get")(resolveGet(categoryFetcher)),
+                listCategories: hasScope("categories:list")(resolveList(categoryFetcher))
+            },
+            CategoryMutation: {
+                // With the generic resolvers, we also rely on the "hasScope" helper function from the
+                // "@webiny/api-security" package, in order to define the required security scopes (permissions).
+                createCategory: hasScope("categories:create")(resolveCreate(categoryFetcher)),
+                updateCategory: hasScope("categories:update")(resolveUpdate(categoryFetcher)),
+                deleteCategory: hasScope("categories:delete")(resolveDelete(categoryFetcher))
             }
         }
     }
