@@ -36,34 +36,40 @@ export default {
 
     type Article {
         id: ID
-        headline: String
-        content: String
-        authorSlugs: String
-        slug: String
-        customByline: String
-        searchTitle: String
-        searchDescription: String
-        twitterTitle: String
-        twitterDescription: String
-        facebookTitle: String
-        facebookDescription: String
+        headline: CmsText
+        content: CmsLongText
+        authorSlugs: CmsText
+        slug: CmsText
+        customByline: CmsText
+        searchTitle: CmsText
+        searchDescription: CmsText
+        twitterTitle: CmsText
+        twitterDescription: CmsText
+        facebookTitle: CmsText
+        facebookDescription: CmsText
         createdOn: DateTime
+        updatedOn: DateTime
+        firstPublishedOn: CmsDateTimeWithTz
+        lastPublishedOn: CmsDateTimeWithTz
     }
 
     input ArticleInput {
         id: ID
-        headline: String!
-        content: String
-        authorSlugs: String
-        slug: String
-        customByline: String
-        searchTitle: String
-        searchDescription: String
-        twitterTitle: String
-        twitterDescription: String
-        facebookTitle: String
-        facebookDescription: String
+        headline: CmsTextInput
+        content: CmsLongTextInput
+        authorSlugs: CmsTextInput
+        slug: CmsTextInput
+        customByline: CmsTextInput
+        searchTitle: CmsTextInput
+        searchDescription: CmsTextInput
+        twitterTitle: CmsTextInput
+        twitterDescription: CmsTextInput
+        facebookTitle: CmsTextInput
+        facebookDescription: CmsTextInput
         createdOn: DateTime
+        updatedOn: DateTime
+        firstPublishedOn: CmsDateTimeWithTzInput
+        lastPublishedOn: CmsDateTimeWithTzInput
     }
 
     input ArticleListWhere {
