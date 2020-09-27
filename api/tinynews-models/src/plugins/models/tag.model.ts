@@ -1,5 +1,5 @@
 // @ts-ignore
-import { withFields, withName, string, pipe } from "@webiny/commodo";
+import { withFields, withName, i18nString, string, pipe } from "@webiny/commodo";
 import { validation } from "@webiny/validation";
 
 /**
@@ -12,7 +12,7 @@ export default ({ createBase }) =>
     pipe(
         withName("Tag"),
         withFields(() => ({
-            title: string({ validation: validation.create("required,minLength:3") }),
+            title: i18nString({ validation: validation.create("required,minLength:3") }),
             slug: string(),
         }))
     )(createBase());

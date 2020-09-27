@@ -1,19 +1,12 @@
 import { merge } from "lodash";
 import gql from "graphql-tag";
 import { GraphQLSchemaPlugin } from "@webiny/graphql/types";
-import { hasScope } from "@webiny/api-security";
 import {
-    emptyResolver,
-    resolveCreate,
-    resolveDelete,
-    resolveGet,
-    resolveList,
-    resolveUpdate
+    emptyResolver
 } from "@webiny/commodo-graphql";
 import article from "./graphql/Article";
 import category from "./graphql/Category";
-
-const articleFetcher = ctx => ctx.models.Article;
+import tag from "./graphql/Tag";
 
 /**
  * As the name itself suggests, the "graphql-schema" plugin enables us to define our service's GraphQL schema.
@@ -30,15 +23,18 @@ const plugin: GraphQLSchemaPlugin = {
         typeDefs: gql`
             ${article.typeDefs}
             ${category.typeDefs}
+            ${tag.typeDefs}
 
             extend type Query {
                 articles: ArticleQuery
                 categories: CategoryQuery
+                tags: TagQuery
             }
 
             extend type Mutation {
                 articles: ArticleMutation
                 categories: CategoryMutation
+                tags: TagMutation
             }
         `,
         resolvers: merge(
@@ -55,7 +51,8 @@ const plugin: GraphQLSchemaPlugin = {
                 }
             },
             article.resolvers,
-            category.resolvers
+            category.resolvers,
+            tag.resolvers,
         )
     }
 };
