@@ -52,7 +52,7 @@ export default {
         firstPublishedOn: DateTime
         lastPublishedOn: DateTime
         authors: [Author]
-        tags: [Tags]
+        tags: [Tag]
         category: Category
     }
 

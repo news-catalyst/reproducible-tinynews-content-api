@@ -6,6 +6,8 @@ import author from "./models/author.model";
 import category from "./models/category.model";
 import page from "./models/page.model";
 import tag from "./models/tag.model";
+import homepageLayoutData from "./models/homepageLayoutData.model";
+import homepageLayoutSchema from "./models/homepageLayoutSchema.model";
 
 /**
  * Use this "context" plugin as a way to aggregate all of service's Commodo models, and assign them
@@ -63,6 +65,8 @@ export default () => ({
             Article: article({ createBase }),
             Author: author({ createBase }),
             Category: category({ createBase }),
+            HomepageLayoutData: homepageLayoutData({ createBase }),
+            HomepageLayoutSchema: homepageLayoutSchema({ createBase }),
             Page: page({ createBase }),
             Tag: tag({ createBase }),
             createBase

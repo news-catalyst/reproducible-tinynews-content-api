@@ -7,6 +7,8 @@ import {
 import article from "./graphql/Article";
 import author from "./graphql/Author";
 import category from "./graphql/Category";
+import homepageLayoutData from "./graphql/HomepageLayoutData";
+import homepageLayoutSchema from "./graphql/HomepageLayoutSchema";
 import page from "./graphql/Page";
 import tag from "./graphql/Tag";
 
@@ -26,6 +28,8 @@ const plugin: GraphQLSchemaPlugin = {
             ${article.typeDefs}
             ${author.typeDefs}
             ${category.typeDefs}
+            ${homepageLayoutData.typeDefs}
+            ${homepageLayoutSchema.typeDefs}
             ${page.typeDefs}
             ${tag.typeDefs}
 
@@ -33,6 +37,8 @@ const plugin: GraphQLSchemaPlugin = {
                 articles: ArticleQuery
                 authors: AuthorQuery
                 categories: CategoryQuery
+                homepageLayoutDatas: HomepageLayoutDataQuery
+                homepageLayoutSchemas: HomepageLayoutSchemaQuery
                 pages: PageQuery
                 tags: TagQuery
             }
@@ -41,6 +47,8 @@ const plugin: GraphQLSchemaPlugin = {
                 articles: ArticleMutation
                 authors: AuthorMutation
                 categories: CategoryMutation
+                homepageLayoutDatas: HomepageLayoutDataMutation
+                homepageLayoutSchemas: HomepageLayoutSchemaMutation
                 pages: PageMutation
                 tags: TagMutation
             }
@@ -52,6 +60,8 @@ const plugin: GraphQLSchemaPlugin = {
                     articles: emptyResolver,
                     authors: emptyResolver,
                     categories: emptyResolver,
+                    homepageLayoutDatas: emptyResolver,
+                    homepageLayoutSchemas: emptyResolver,
                     pages: emptyResolver,
                     tags: emptyResolver
                 },
@@ -60,6 +70,8 @@ const plugin: GraphQLSchemaPlugin = {
                     articles: emptyResolver,
                     authors: emptyResolver,
                     categories: emptyResolver,
+                    homepageLayoutDatas: emptyResolver,
+                    homepageLayoutSchemas: emptyResolver,
                     pages: emptyResolver,
                     tags: emptyResolver
                 }
@@ -67,6 +79,8 @@ const plugin: GraphQLSchemaPlugin = {
             article.resolvers,
             author.resolvers,
             category.resolvers,
+            homepageLayoutData.resolvers,
+            homepageLayoutSchema.resolvers,
             page.resolvers,
             tag.resolvers,
         )
