@@ -2,6 +2,7 @@
 import { withStorage, withCrudLogs, withSoftDelete, withFields, pipe } from "@webiny/commodo";
 import { withUser } from "@webiny/api-security";
 import article from "./models/article.model";
+import author from "./models/author.model";
 import category from "./models/category.model";
 import tag from "./models/tag.model";
 
@@ -59,6 +60,7 @@ export default () => ({
         // Although not required, it's often convenient to have all of your models available via context.
         context.models = {
             Article: article({ createBase }),
+            Author: author({ createBase }),
             Category: category({ createBase }),
             Tag: tag({ createBase }),
             createBase

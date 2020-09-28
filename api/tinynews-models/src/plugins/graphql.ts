@@ -5,6 +5,7 @@ import {
     emptyResolver
 } from "@webiny/commodo-graphql";
 import article from "./graphql/Article";
+import author from "./graphql/Author";
 import category from "./graphql/Category";
 import tag from "./graphql/Tag";
 
@@ -22,17 +23,20 @@ const plugin: GraphQLSchemaPlugin = {
     schema: {
         typeDefs: gql`
             ${article.typeDefs}
+            ${author.typeDefs}
             ${category.typeDefs}
             ${tag.typeDefs}
 
             extend type Query {
                 articles: ArticleQuery
+                authors: AuthorQuery
                 categories: CategoryQuery
                 tags: TagQuery
             }
 
             extend type Mutation {
                 articles: ArticleMutation
+                authors: AuthorMutation
                 categories: CategoryMutation
                 tags: TagMutation
             }
@@ -42,15 +46,20 @@ const plugin: GraphQLSchemaPlugin = {
                 Query: {
                     // Needs to be here, otherwise the resolvers below cannot return any result.
                     articles: emptyResolver,
-                    categories: emptyResolver
+                    authors: emptyResolver,
+                    categories: emptyResolver,
+                    tags: emptyResolver
                 },
                 Mutation: {
                     // Needs to be here, otherwise the resolvers below cannot return any result.
                     articles: emptyResolver,
-                    categories: emptyResolver
+                    authors: emptyResolver,
+                    categories: emptyResolver,
+                    tags: emptyResolver
                 }
             },
             article.resolvers,
+            author.resolvers,
             category.resolvers,
             tag.resolvers,
         )
