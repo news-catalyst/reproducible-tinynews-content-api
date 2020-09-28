@@ -1,6 +1,9 @@
 // @ts-ignore
-import { withFields, withName, i18nString, string, pipe } from "@webiny/commodo";
+import { withFields, withName, i18nString, ref, string, pipe } from "@webiny/commodo";
 import { validation } from "@webiny/validation";
+import authorModel from "./author.model";
+import categoryModel from "./category.model";
+import tagModel from "./tag.model";
 
 /**
  * A simple "Article" data model, that consists of a couple of simple fields.
@@ -24,5 +27,8 @@ export default ({ createBase }) =>
             twitterDescription: i18nString(),
             facebookTitle: i18nString(),
             facebookDescription: i18nString(),
+            authors: ref({ instanceOf: authorModel, list: true }),
+            category: ref({ instanceOf: categoryModel, list: false }),
+            tags: ref({ instanceOf: tagModel, list: true }),
         }))
     )(createBase());

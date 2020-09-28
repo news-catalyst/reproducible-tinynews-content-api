@@ -51,6 +51,9 @@ export default {
         updatedOn: DateTime
         firstPublishedOn: DateTime
         lastPublishedOn: DateTime
+        authors: [Author]
+        tags: [Tags]
+        category: Category
     }
 
     input ArticleInput {
