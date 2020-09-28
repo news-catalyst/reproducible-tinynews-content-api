@@ -7,6 +7,7 @@ import {
 import article from "./graphql/Article";
 import author from "./graphql/Author";
 import category from "./graphql/Category";
+import page from "./graphql/Page";
 import tag from "./graphql/Tag";
 
 /**
@@ -25,12 +26,14 @@ const plugin: GraphQLSchemaPlugin = {
             ${article.typeDefs}
             ${author.typeDefs}
             ${category.typeDefs}
+            ${page.typeDefs}
             ${tag.typeDefs}
 
             extend type Query {
                 articles: ArticleQuery
                 authors: AuthorQuery
                 categories: CategoryQuery
+                pages: PageQuery
                 tags: TagQuery
             }
 
@@ -38,6 +41,7 @@ const plugin: GraphQLSchemaPlugin = {
                 articles: ArticleMutation
                 authors: AuthorMutation
                 categories: CategoryMutation
+                pages: PageMutation
                 tags: TagMutation
             }
         `,
@@ -48,6 +52,7 @@ const plugin: GraphQLSchemaPlugin = {
                     articles: emptyResolver,
                     authors: emptyResolver,
                     categories: emptyResolver,
+                    pages: emptyResolver,
                     tags: emptyResolver
                 },
                 Mutation: {
@@ -55,12 +60,14 @@ const plugin: GraphQLSchemaPlugin = {
                     articles: emptyResolver,
                     authors: emptyResolver,
                     categories: emptyResolver,
+                    pages: emptyResolver,
                     tags: emptyResolver
                 }
             },
             article.resolvers,
             author.resolvers,
             category.resolvers,
+            page.resolvers,
             tag.resolvers,
         )
     }
