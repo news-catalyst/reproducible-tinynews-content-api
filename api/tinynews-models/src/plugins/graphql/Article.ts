@@ -66,44 +66,38 @@ export default {
 
     type Article {
         id: ID
-        headline: I18NStringValue
-        content: I18NStringValue
-        authorSlugs: I18NStringValue
+        headline: String
+        content: String
+        authorSlugs: String
         slug: String
-        customByline: I18NStringValue
-        searchTitle: I18NStringValue
-        searchDescription: I18NStringValue
-        twitterTitle: I18NStringValue
-        twitterDescription: I18NStringValue
-        facebookTitle: I18NStringValue
-        facebookDescription: I18NStringValue
+        customByline: String
+        searchTitle: String
+        searchDescription: String
+        twitterTitle: String
+        twitterDescription: String
+        facebookTitle: String
+        facebookDescription: String
         createdOn: DateTime
         updatedOn: DateTime
         firstPublishedOn: DateTime
         lastPublishedOn: DateTime
-        authors: CmsRefArticleAuthorsList
-        tags: CmsRefArticleTagsList
-        category: CmsRefArticleCategory
     }
 
     input ArticleInput {
         id: ID
-        headline: I18NStringValueInput
-        content: I18NStringValueInput
-        authorSlugs: I18NStringValueInput
+        headline: String!
+        content: String
+        authorSlugs: String
         slug: String
-        customByline: I18NStringValueInput
-        searchTitle: I18NStringValueInput
-        searchDescription: I18NStringValueInput
-        twitterTitle: I18NStringValueInput
-        twitterDescription: I18NStringValueInput
-        facebookTitle: I18NStringValueInput
-        facebookDescription: I18NStringValueInput
+        customByline: String
+        searchTitle: String
+        searchDescription: String
+        twitterTitle: String
+        twitterDescription: String
+        facebookTitle: String
+        facebookDescription: String
         firstPublishedOn: DateTime
         lastPublishedOn: DateTime
-        tags: CmsRefListInput
-        category: CmsRefInput
-        authors: CmsRefListInput
     }
 
     input ArticleListWhere {

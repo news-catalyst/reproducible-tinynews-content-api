@@ -1,5 +1,5 @@
 // @ts-ignore
-import { withFields, withName, i18nString, ref, string, pipe } from "@webiny/commodo";
+import { withFields, withName, string, ref, pipe } from "@webiny/commodo";
 import { validation } from "@webiny/validation";
 import authorModel from "./author.model";
 import categoryModel from "./category.model";
@@ -16,19 +16,19 @@ export default ({ createBase }) =>
         withName("Article"),
         withFields(() => ({
             // A simple "string" field, with a couple of validators attached.
-            headline: i18nString({ validation: validation.create("required,minLength:3") }),
-            content: i18nString(),
-            authorSlugs: i18nString(),
-            customByline: i18nString(),
+            headline: string({ validation: validation.create("required,minLength:3") }),
+            content: string(),
+            authorSlugs: string(),
+            customByline: string(),
             slug: string(),
-            searchTitle: i18nString(),
-            searchDescription: i18nString(),
-            twitterTitle: i18nString(),
-            twitterDescription: i18nString(),
-            facebookTitle: i18nString(),
-            facebookDescription: i18nString(),
-            authors: ref({ instanceOf: authorModel, list: true }),
-            category: ref({ instanceOf: categoryModel, list: false }),
-            tags: ref({ instanceOf: tagModel, list: true }),
+            searchTitle: string(),
+            searchDescription: string(),
+            twitterTitle: string(),
+            twitterDescription: string(),
+            facebookTitle: string(),
+            facebookDescription: string(),
+            // authors: ref({ instanceOf: authorModel, list: true }),
+            // category: ref({ instanceOf: categoryModel, list: false }),
+            // tags: ref({ instanceOf: tagModel, list: true }),
         }))
     )(createBase());
