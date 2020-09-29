@@ -83,7 +83,6 @@ export default {
         lastPublishedOn: CmsDateTimeWithTz
         authors: CmsRefArticleAuthorsList
         tags: CmsRefArticleTagsList
-        category: Category
         category: CmsRefArticleCategory
     }
 

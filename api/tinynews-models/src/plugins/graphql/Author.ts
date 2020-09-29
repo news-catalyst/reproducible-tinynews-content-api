@@ -36,24 +36,26 @@ export default {
 
     type Author {
         id: ID
-        name: String
-        title: String
-        bio: String
-        twitter: String
-        photoUrl: String
-        slug: String
-        staff: Boolean
+        createdOn: DateTime
+        updatedOn: DateTime
+        name: CmsText
+        title: CmsText
+        bio: CmsLongText
+        twitter: CmsText
+        photoUrl: CmsText
+        slug: CmsText
+        staff: CmsBoolean
     }
 
     input AuthorInput {
         id: ID
-        name: String!
-        title: String
-        bio: String
-        twitter: String
-        photoUrl: String
-        slug: String
-        staff: Boolean
+        name: CmsTextInput
+        title: CmsTextInput
+        bio: CmsLongTextInput
+        twitter: CmsTextInput
+        photoUrl: CmsTextInput
+        slug: CmsTextInput
+        staff: CmsBooleanInput
     }
 
     input AuthorListWhere {

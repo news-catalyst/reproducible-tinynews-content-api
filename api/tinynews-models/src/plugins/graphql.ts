@@ -45,6 +45,43 @@ const plugin: GraphQLSchemaPlugin = {
             ${page.typeDefs}
             ${tag.typeDefs}
 
+            type CmsBoolean {
+                value(locale: String): Boolean
+                values: [CmsBooleanLocalized]!
+              }
+              
+              input CmsBooleanInput {
+                values: [CmsBooleanLocalizedInput]
+              }
+              
+              type CmsBooleanList {
+                value: [Boolean]
+                values: [CmsBooleanListLocalized]!
+              }
+              
+              input CmsBooleanListInput {
+                values: [CmsBooleanListLocalizedInput]
+              }
+              
+              type CmsBooleanListLocalized {
+                value(locale: String): [Boolean]
+                locale: ID!
+              }
+              
+              input CmsBooleanListLocalizedInput {
+                value: [Boolean]
+                locale: ID!
+              }
+              
+              type CmsBooleanLocalized {
+                value: Boolean
+                locale: ID!
+              }
+              
+              input CmsBooleanLocalizedInput {
+                value: Boolean
+                locale: ID!
+              }
             type CmsDateTime {
                 value(locale: String): String
                 values: [CmsDateTimeLocalized]!

@@ -36,32 +36,30 @@ export default {
 
     type Page {
         id: ID
-        headline: String
-        content: String
-        slug: String
-        searchTitle: String
-        searchDescription: String
-        twitterTitle: String
-        twitterDescription: String
-        facebookTitle: String
-        facebookDescription: String
+        headline: CmsText
+        content: CmsLongText
+        slug: CmsText
+        searchTitle: CmsText
+        searchDescription: CmsText
+        twitterTitle: CmsText
+        twitterDescription: CmsText
+        facebookTitle: CmsText
+        facebookDescription: CmsText
         createdOn: DateTime
         updatedOn: DateTime
     }
 
     input PageInput {
         id: ID
-        headline: String
-        content: String
-        slug: String
-        searchTitle: String
-        searchDescription: String
-        twitterTitle: String
-        twitterDescription: String
-        facebookTitle: String
-        facebookDescription: String
-        createdOn: DateTime
-        updatedOn: DateTime
+        headline: CmsTextInput
+        content: CmsLongTextInput
+        slug: CmsTextInput
+        searchTitle: CmsTextInput
+        searchDescription: CmsTextInput
+        twitterTitle: CmsTextInput
+        twitterDescription: CmsTextInput
+        facebookTitle: CmsTextInput
+        facebookDescription: CmsTextInput
     }
 
     input PageListWhere {
