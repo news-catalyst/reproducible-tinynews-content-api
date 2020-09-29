@@ -45,6 +45,157 @@ const plugin: GraphQLSchemaPlugin = {
             ${page.typeDefs}
             ${tag.typeDefs}
 
+            type CmsDateTime {
+                value(locale: String): String
+                values: [CmsDateTimeLocalized]!
+              }
+              
+              input CmsDateTimeInput {
+                values: [CmsDateTimeLocalizedInput]
+              }
+              
+              type CmsDateTimeList {
+                value: [String]
+                values: [CmsDateTimeListLocalized]!
+              }
+              
+              input CmsDateTimeListInput {
+                values: [CmsDateTimeListLocalizedInput]
+              }
+              
+              type CmsDateTimeListLocalized {
+                value(locale: String): [String]
+                locale: ID!
+              }
+              
+              input CmsDateTimeListLocalizedInput {
+                value: [String]
+                locale: ID!
+              }
+              
+              type CmsDateTimeLocalized {
+                value: String
+                locale: ID!
+              }
+              
+              input CmsDateTimeLocalizedInput {
+                value: String
+                locale: ID!
+              }
+              
+              type CmsDateTimeWithTz {
+                value(locale: String): String
+                values: [CmsDateTimeWithTzLocalized]!
+              }
+              
+              input CmsDateTimeWithTzInput {
+                values: [CmsDateTimeWithTzLocalizedInput]
+              }
+              
+              type CmsDateTimeWithTzList {
+                value: [String]
+                values: [CmsDateTimeWithTzListLocalized]!
+              }
+              
+              input CmsDateTimeWithTzListInput {
+                values: [CmsDateTimeWithTzListLocalizedInput]
+              }
+              
+              type CmsDateTimeWithTzListLocalized {
+                value(locale: String): [String]
+                locale: ID!
+              }
+              
+              input CmsDateTimeWithTzListLocalizedInput {
+                value: [String]
+                locale: ID!
+              }
+              
+              type CmsDateTimeWithTzLocalized {
+                value: String
+                locale: ID!
+              }
+              
+              input CmsDateTimeWithTzLocalizedInput {
+                value: String
+                locale: ID!
+              }
+
+            type CmsText {
+                value(locale: String): String
+                values: [CmsTextLocalized]!
+              }
+              
+              input CmsTextInput {
+                values: [CmsTextLocalizedInput]
+              }
+              
+              type CmsTextList {
+                value: [String]
+                values: [CmsTextListLocalized]!
+              }
+              
+              input CmsTextListInput {
+                values: [CmsTextListLocalizedInput]
+              }
+              
+              type CmsTextListLocalized {
+                value(locale: String): [String]
+                locale: ID!
+              }
+              
+              input CmsTextListLocalizedInput {
+                value: [String]
+                locale: ID!
+              }
+              
+              type CmsTextLocalized {
+                value: String
+                locale: ID!
+              }
+              
+              input CmsTextLocalizedInput {
+                value: String
+                locale: ID!
+              }
+
+              type CmsLongText {
+                value(locale: String): String
+                values: [CmsLongTextLocalized]!
+              }
+              
+              input CmsLongTextInput {
+                values: [CmsLongTextLocalizedInput]
+              }
+              
+              type CmsLongTextList {
+                value: [String]
+                values: [CmsLongTextListLocalized]!
+              }
+              
+              input CmsLongTextListInput {
+                values: [CmsLongTextListLocalizedInput]
+              }
+              
+              type CmsLongTextListLocalized {
+                value(locale: String): [String]
+                locale: ID!
+              }
+              
+              input CmsLongTextListLocalizedInput {
+                value: [String]
+                locale: ID!
+              }
+              
+              type CmsLongTextLocalized {
+                value: String
+                locale: ID!
+              }
+              
+              input CmsLongTextLocalizedInput {
+                value: String
+                locale: ID!
+              }
             input CmsRefListInput {
                 values: [CmsRefListLocalizedInput]
             }
