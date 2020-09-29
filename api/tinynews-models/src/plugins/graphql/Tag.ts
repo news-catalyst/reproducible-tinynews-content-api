@@ -36,14 +36,14 @@ export default {
 
     type Tag {
         id: ID
-        title: String
-        slug: String
+        title: CmsText
+        slug: CmsText
     }
 
     input TagInput {
         id: ID
-        title: String!
-        slug: String
+        title: CmsTextInput
+        slug: CmsTextInput
     }
 
     input TagListWhere {
