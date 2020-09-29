@@ -81,6 +81,7 @@ export default {
         updatedOn: DateTime
         firstPublishedOn: DateTime
         lastPublishedOn: DateTime
+        category: Category
     }
 
     input ArticleInput {

@@ -28,7 +28,7 @@ export default ({ createBase }) =>
             facebookTitle: string(),
             facebookDescription: string(),
             // authors: ref({ instanceOf: authorModel, list: true }),
-            // category: ref({ instanceOf: categoryModel, list: false }),
+            category: ref({ instanceOf: categoryModel, list: false }),
             // tags: ref({ instanceOf: tagModel, list: true }),
         }))
     )(createBase());

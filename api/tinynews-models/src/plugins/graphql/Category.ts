@@ -36,14 +36,14 @@ export default {
 
     type Category {
         id: ID
-        title: CmsText
-        slug: CmsText
+        title: String
+        slug: String
     }
 
     input CategoryInput {
         id: ID
-        title: CmsTextInput
-        slug: CmsTextInput
+        title: String
+        slug: String
     }
 
     input CategoryListWhere {
