@@ -68,7 +68,7 @@ export default {
     type CategoryQuery {
         getCategory(id: ID): CategoryResponse
 
-        listCategorys(
+        listCategories(
             where: CategoryListWhere
             sort: CategoryListSort
             limit: Int
