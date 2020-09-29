@@ -99,6 +99,7 @@ export default {
         facebookDescription: String
         firstPublishedOn: DateTime
         lastPublishedOn: DateTime
+        category: ID
     }
 
     input ArticleListWhere {
