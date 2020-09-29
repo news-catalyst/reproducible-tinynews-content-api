@@ -25,6 +25,10 @@ export default ({ createBase, context }) => {
             twitterDescription: string(),
             facebookTitle: string(),
             facebookDescription: string(),
+            authors: ref({
+                list: true,
+                instanceOf: context.models.Author
+            }),
             category: ref({
                 list: false,
                 instanceOf: context.models.Category
