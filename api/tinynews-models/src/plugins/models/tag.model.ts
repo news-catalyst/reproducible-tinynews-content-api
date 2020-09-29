@@ -12,7 +12,7 @@ export default ({ createBase }) =>
     pipe(
         withName("Tag"),
         withFields(() => ({
-            title: i18nString({ validation: validation.create("required,minLength:3") }),
+            title: string({ validation: validation.create("required,minLength:3") }),
             slug: string(),
         }))
     )(createBase());
