@@ -38,24 +38,23 @@ export default {
         id: ID
         createdOn: DateTime
         updatedOn: DateTime
-        name: CmsText
-        title: CmsText
-        bio: CmsLongText
-        twitter: CmsText
-        photoUrl: CmsText
-        slug: CmsText
-        staff: CmsBoolean
+        name: I18NStringValue
+        title: I18NStringValue
+        bio: I18NStringValue
+        twitter: I18NStringValue
+        photoUrl: I18NStringValue
+        slug: I18NStringValue
+        staff: Boolean
     }
 
     input AuthorInput {
-        id: ID
-        name: CmsTextInput
-        title: CmsTextInput
-        bio: CmsLongTextInput
-        twitter: CmsTextInput
-        photoUrl: CmsTextInput
-        slug: CmsTextInput
-        staff: CmsBooleanInput
+        name: I18NStringValueInput
+        title: I18NStringValueInput
+        bio: I18NStringValueInput
+        twitter: I18NStringValueInput
+        photoUrl: I18NStringValueInput
+        slug: I18NStringValueInput
+        staff: Boolean
     }
 
     input AuthorListWhere {

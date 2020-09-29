@@ -66,21 +66,21 @@ export default {
 
     type Article {
         id: ID
-        headline: CmsText
-        content: CmsLongText
-        authorSlugs: CmsText
-        slug: CmsText
-        customByline: CmsText
-        searchTitle: CmsText
-        searchDescription: CmsText
-        twitterTitle: CmsText
-        twitterDescription: CmsText
-        facebookTitle: CmsText
-        facebookDescription: CmsText
+        headline: I18NStringValue
+        content: I18NStringValue
+        authorSlugs: I18NStringValue
+        slug: String
+        customByline: I18NStringValue
+        searchTitle: I18NStringValue
+        searchDescription: I18NStringValue
+        twitterTitle: I18NStringValue
+        twitterDescription: I18NStringValue
+        facebookTitle: I18NStringValue
+        facebookDescription: I18NStringValue
         createdOn: DateTime
         updatedOn: DateTime
-        firstPublishedOn: CmsDateTimeWithTz
-        lastPublishedOn: CmsDateTimeWithTz
+        firstPublishedOn: DateTime
+        lastPublishedOn: DateTime
         authors: CmsRefArticleAuthorsList
         tags: CmsRefArticleTagsList
         category: CmsRefArticleCategory
@@ -88,19 +88,19 @@ export default {
 
     input ArticleInput {
         id: ID
-        headline: CmsTextInput
-        content: CmsLongTextInput
-        authorSlugs: CmsTextInput
-        slug: CmsTextInput
-        customByline: CmsTextInput
-        searchTitle: CmsTextInput
-        searchDescription: CmsTextInput
-        twitterTitle: CmsTextInput
-        twitterDescription: CmsTextInput
-        facebookTitle: CmsTextInput
-        facebookDescription: CmsTextInput
-        firstPublishedOn: CmsDateTimeWithTzInput
-        lastPublishedOn: CmsDateTimeWithTzInput
+        headline: I18NStringValueInput
+        content: I18NStringValueInput
+        authorSlugs: I18NStringValueInput
+        slug: String
+        customByline: I18NStringValueInput
+        searchTitle: I18NStringValueInput
+        searchDescription: I18NStringValueInput
+        twitterTitle: I18NStringValueInput
+        twitterDescription: I18NStringValueInput
+        facebookTitle: I18NStringValueInput
+        facebookDescription: I18NStringValueInput
+        firstPublishedOn: DateTime
+        lastPublishedOn: DateTime
         tags: CmsRefListInput
         category: CmsRefInput
         authors: CmsRefListInput
