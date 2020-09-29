@@ -2,6 +2,13 @@ import { merge } from "lodash";
 import gql from "graphql-tag";
 import { GraphQLSchemaPlugin } from "@webiny/graphql/types";
 import {
+    I18NStringValueType,
+    I18NJSONValueType,
+    I18NStringValueInput,
+    I18NJSONValueInput
+} from "@webiny/api-i18n/graphql";
+
+import {
     emptyResolver
 } from "@webiny/commodo-graphql";
 import article from "./graphql/Article";
@@ -25,6 +32,11 @@ const plugin: GraphQLSchemaPlugin = {
     name: "graphql-schema-tinynews",
     schema: {
         typeDefs: gql`
+            ${I18NStringValueType()}
+            ${I18NJSONValueType()}
+            ${I18NStringValueInput()}
+            ${I18NJSONValueInput()}
+
             ${article.typeDefs}
             ${author.typeDefs}
             ${category.typeDefs}
@@ -32,6 +44,24 @@ const plugin: GraphQLSchemaPlugin = {
             ${homepageLayoutSchema.typeDefs}
             ${page.typeDefs}
             ${tag.typeDefs}
+
+            input CmsRefListInput {
+                values: [CmsRefListLocalizedInput]
+            }
+            
+            input CmsRefListLocalizedInput {
+                value: [RefInput]
+                locale: ID!
+            }
+
+            input CmsRefLocalizedInput {
+                value: RefInput
+                locale: ID!
+            }
+
+            input CmsRefInput {
+                values: [CmsRefLocalizedInput]
+            }
 
             extend type Query {
                 articles: ArticleQuery

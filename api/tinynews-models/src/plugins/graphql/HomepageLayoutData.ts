@@ -43,7 +43,7 @@ export default {
     input HomepageLayoutDataInput {
         id: ID
         data: String
-        layoutSchema: HomepageLayoutSchema
+        layoutSchema: CmsRefInput
     }
 
     input HomepageLayoutDataListWhere {

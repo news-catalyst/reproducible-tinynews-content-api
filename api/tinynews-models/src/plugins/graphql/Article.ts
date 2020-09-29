@@ -73,6 +73,9 @@ export default {
         updatedOn: DateTime
         firstPublishedOn: DateTime
         lastPublishedOn: DateTime
+        tags: CmsRefListInput
+        category: CmsRefInput
+        authors: CmsRefListInput
     }
 
     input ArticleListWhere {
