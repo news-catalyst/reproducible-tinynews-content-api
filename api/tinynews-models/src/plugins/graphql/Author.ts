@@ -41,7 +41,7 @@ export default {
         name: I18NStringValue
         title: I18NStringValue
         bio: I18NStringValue
-        twitter: I18NStringValue
+        twitter: String
         photoUrl: String
         slug: String
         staff: Boolean
@@ -51,7 +51,7 @@ export default {
         name: I18NStringValueInput
         title: I18NStringValueInput
         bio: I18NStringValueInput
-        twitter: I18NStringValueInput
+        twitter: String
         photoUrl: String
         slug: String
         staff: Boolean
