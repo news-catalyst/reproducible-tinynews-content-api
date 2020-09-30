@@ -13,10 +13,10 @@ export default ({ createBase }) =>
         withName("Author"),
         withFields(() => ({
             // A simple "string" field, with a couple of validators attached.
-            name: string({ validation: validation.create("required,minLength:3") }),
-            title: string(),
-            bio: string(),
-            twitter: string(),
+            name: i18nString({ validation: validation.create("required,minLength:3") }),
+            title: i18nString(),
+            bio: i18nString(),
+            twitter: i18nString(),
             photoUrl: string(),
             staff: boolean(),
             slug: string(),

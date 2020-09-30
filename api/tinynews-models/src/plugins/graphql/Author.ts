@@ -42,7 +42,7 @@ export default {
         title: I18NStringValue
         bio: I18NStringValue
         twitter: I18NStringValue
-        photoUrl: I18NStringValue
+        photoUrl: String
         slug: I18NStringValue
         staff: Boolean
     }
@@ -52,7 +52,7 @@ export default {
         title: I18NStringValueInput
         bio: I18NStringValueInput
         twitter: I18NStringValueInput
-        photoUrl: I18NStringValueInput
+        photoUrl: String
         slug: I18NStringValueInput
         staff: Boolean
     }
