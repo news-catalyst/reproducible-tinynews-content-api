@@ -18,19 +18,26 @@ describe("CRUD Test", () => {
                 query: CREATE_AUTHOR,
                 variables: {
                     data: {
-                        name: "Jacqui Lough",
-                        title: {
-                            values: [
-                              {
-                                value: "Staff Writer",
-                                locale: "bdcdaca31349dc6bb7ab64fc9058c1d7c2b5804e7c874cd8"
-                              }
-                            ]
-                          },
-                          bio: "Jacqui Lough is a staff writer.",
-                          twitter: "@jacqui",
-                          slug: "jacqui-lough",
-                          photoUrl: "http://imgur.com/photo.jpg"
+                            name: "Jacqui Lough",
+                            title: {
+                                values: [
+                                    {
+                                        value: "Staff Writer",
+                                        locale: "bdcdaca31349dc6bb7ab64fc9058c1d7c2b5804e7c874cd8"
+                                    }
+                                ]
+                            },
+                            bio: { 
+                              values: [
+                                  {
+                                    value: "Jacqui Lough is a staff writer.",
+                                    locale: "bdcdaca31349dc6bb7ab64fc9058c1d7c2b5804e7c874cd8"
+                                  }
+                              ]
+                            },
+                            twitter: "@jacqui",
+                            slug: "jacqui-lough",
+                            photoUrl: "http://imgur.com/photo.jpg"
                     }
                 }
             }
@@ -43,7 +50,14 @@ describe("CRUD Test", () => {
                 query: CREATE_ARTICLE,
                 variables: {
                     data: {
-                        headline: "Article 1",
+                        headline: {
+                            values: [
+                                {
+                                    value: "Article 1",
+                                    locale: "bdcdaca31349dc6bb7ab64fc9058c1d7c2b5804e7c874cd8"
+                                }
+                            ]
+                        }
                     }
                 }
             }
@@ -55,7 +69,14 @@ describe("CRUD Test", () => {
                 query: CREATE_ARTICLE,
                 variables: {
                     data: {
-                        headline: "Article 2",
+                        headline: {
+                            values: [
+                                {
+                                    value: "Article 2",
+                                    locale: "bdcdaca31349dc6bb7ab64fc9058c1d7c2b5804e7c874cd8"
+                                }
+                            ]
+                        }
                     }
                 }
             }
@@ -68,7 +89,14 @@ describe("CRUD Test", () => {
                 query: CREATE_ARTICLE,
                 variables: {
                     data: {
-                        headline: "Article 3",
+                        headline: {
+                            values: [
+                                {
+                                    value: "Article 3",
+                                    locale: "bdcdaca31349dc6bb7ab64fc9058c1d7c2b5804e7c874cd8"
+                                }
+                            ]
+                        }
                     }
                 }
             }

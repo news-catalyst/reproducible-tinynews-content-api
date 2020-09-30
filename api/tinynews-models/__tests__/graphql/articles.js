@@ -14,7 +14,11 @@ export const CREATE_ARTICLE = /* GraphQL */ `
             createArticle(data: $data) {
                 data {
                     id
-                    headline 
+                    headline {
+                        values {
+                            value
+                        }
+                    }
                 }
                 error ${ERROR_FIELDS}
             }
@@ -35,7 +39,11 @@ export const LIST_ARTICLES = /* GraphQL */ `
             listArticles(where: $where, sort: $sort, limit: $limit, after: $after, before: $before) {
                 data {
                     id
-                    headline
+                    headline {
+                        values {
+                            value
+                        }
+                    }
                 }
                 error ${ERROR_FIELDS}
 

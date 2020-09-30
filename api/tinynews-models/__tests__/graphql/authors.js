@@ -15,7 +15,11 @@ mutation CreateAuthor($data: AuthorInput!) {
             data {
                 id
                 name
-                bio
+                bio {
+                  values {
+                    value
+                  }
+                }
                 title {
                     values {
                     value
@@ -40,10 +44,16 @@ export const LIST_AUTHORS = /* GraphQL */ `
         data {
           id
           name
-          bio
+          bio {
+            values {
+              value
+            }
+          }
           twitter
           title {
-            value
+            values {
+              value
+            }
           }
           slug
           photoUrl
