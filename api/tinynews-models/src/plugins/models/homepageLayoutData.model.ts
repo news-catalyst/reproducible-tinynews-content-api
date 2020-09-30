@@ -8,11 +8,11 @@ import homepageLayoutSchemaModel from "./homepageLayoutSchema.model";
  * @see https://docs.webiny.com/docs/api-development/commodo/introduction
  * @see https://github.com/webiny/commodo/tree/master
  */
-export default ({ createBase }) =>
+export default ({ context, createBase }) =>
     pipe(
         withName("HomepageLayoutData"),
         withFields(() => ({
             data: string(),
-            layoutSchema: ref({ instanceOf: homepageLayoutSchemaModel, list: false }),
+            layoutSchema: ref({ instanceOf: context.models.HomepageLayoutSchema, list: false }),
         }))
     )(createBase());
