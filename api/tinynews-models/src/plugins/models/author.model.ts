@@ -2,27 +2,50 @@
 import { withFields, withName, boolean, string } from "@webiny/commodo";
 import { i18nString } from "@webiny/api-i18n/fields";
 import { flow } from "lodash";
+import { Context as APIContext } from "@webiny/graphql/types";
+import { Context as I18NContext } from "@webiny/api-i18n/types";
+import { Context as CommodoContext } from "@webiny/api-plugin-commodo-db-proxy/types";
 
-/**
- * A simple "Article" data model, that consists of a couple of simple fields.
- *
- * @see https://docs.webiny.com/docs/api-development/commodo/introduction
- * @see https://github.com/webiny/commodo/tree/master
- */
-export default ({ createBase, context }) => {
-    const Author: any = flow(
+export type Author = {
+    createBase: any;
+    context: APIContext & I18NContext & CommodoContext;
+};
+
+export default ({ context, createBase }: Author) => {
+    // let defaultLocale = null;
+    // if (context.i18n.getDefaultLocale()) {
+    //     defaultLocale = context.i18n.getDefaultLocale().id;
+    // }
+
+    return flow(
         withName("Author"),
-        withFields(() => ({
-            // A simple "string" field, with a couple of validators attached.
-            name: i18nString({ context }),
+        withFields({
+            name: string(),
             title: i18nString({ context }),
-            bio: i18nString({ context }),
+            bio: i18nString({context}),
             twitter: string(),
             photoUrl: string(),
             staff: boolean(),
             slug: string(),
-        })),
+        })
     )(createBase());
-
-    return Author;
 };
+
+
+
+// export default ({ createBase, context }) => {
+//     const Author: any = flow(
+//         withName("Author"),
+//         withFields(() => ({
+//             name: string(),
+//             title: i18nString({ context }),
+//             bio: string(),
+//             twitter: string(),
+//             photoUrl: string(),
+//             staff: boolean(),
+//             slug: string(),
+//         })),
+//     )(createBase());
+
+//     return Author;
+// };

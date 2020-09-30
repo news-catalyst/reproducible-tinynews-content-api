@@ -14,24 +14,16 @@ mutation CreateAuthor($data: AuthorInput!) {
         createAuthor(data: $data) {
             data {
                 id
-                name {
-                  values {
+                name
+                bio
+                title {
+                    values {
                     value
-                  }
+                    }
                 }
-              bio {
-                values {
-                  value
-                }
-              }
-              title {
-                values {
-                  value
-                }
-              }
-              photoUrl
-              twitter
-              slug
+                photoUrl
+                twitter
+                slug
             }
             error ${ERROR_FIELDS}
         }
@@ -47,15 +39,9 @@ export const LIST_AUTHORS = /* GraphQL */ `
         error ${ERROR_FIELDS}
         data {
           id
-          name {
-            value
-          }
-          bio {
-            value
-          }
-          twitter {
-            value
-          }
+          name
+          bio
+          twitter
           title {
             value
           }

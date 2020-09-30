@@ -38,7 +38,7 @@ export default {
         id: ID
         createdOn: DateTime
         updatedOn: DateTime
-        name: I18NStringValue
+        name: String
         title: I18NStringValue
         bio: I18NStringValue
         twitter: String
@@ -48,7 +48,7 @@ export default {
     }
 
     input AuthorInput {
-        name: I18NStringValueInput
+        name: String
         title: I18NStringValueInput
         bio: I18NStringValueInput
         twitter: String

@@ -18,14 +18,7 @@ describe("CRUD Test", () => {
                 query: CREATE_AUTHOR,
                 variables: {
                     data: {
-                        name: {
-                            values: [
-                              {
-                                value: "Jacqui Lough",
-                                locale: "bdcdaca31349dc6bb7ab64fc9058c1d7c2b5804e7c874cd8"
-                              }
-                            ]
-                        },
+                        name: "Jacqui Lough",
                         title: {
                             values: [
                               {
@@ -34,14 +27,7 @@ describe("CRUD Test", () => {
                               }
                             ]
                           },
-                          bio: {
-                            values: [
-                              {
-                                value: "Jacqui Lough is a staff writer.",
-                                locale: "bdcdaca31349dc6bb7ab64fc9058c1d7c2b5804e7c874cd8"
-                              }
-                            ]
-                          },
+                          bio: "Jacqui Lough is a staff writer.",
                           twitter: "@jacqui",
                           slug: "jacqui-lough",
                           photoUrl: "http://imgur.com/photo.jpg"
