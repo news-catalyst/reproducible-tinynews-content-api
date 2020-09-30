@@ -83,6 +83,7 @@ export default {
         lastPublishedOn: DateTime
         category: Category
         authors: [Author]
+        tags: [Tag]
     }
 
     input ArticleInput {
@@ -101,6 +102,8 @@ export default {
         firstPublishedOn: DateTime
         lastPublishedOn: DateTime
         category: ID
+        authors: [ID]
+        tags: [ID]
     }
 
     input ArticleListWhere {

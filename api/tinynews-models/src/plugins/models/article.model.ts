@@ -33,7 +33,11 @@ export default ({ context, createBase }: Article) => {
             category: ref({
                 list: false,
                 instanceOf: context.models.Category
-            })
+            }),
+            tags: ref({
+                list: true,
+                instanceOf: context.models.Tag
+            }),
         }))
     )(createBase());
 };
