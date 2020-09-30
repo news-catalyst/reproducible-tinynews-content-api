@@ -61,13 +61,13 @@ export default () => ({
         };
 
         context.models = {};
-        context.models.Category = category({ createBase });
-        context.models.Article = article({ createBase, context });
+        context.models.Category = category({ context, createBase });
+        context.models.Article = article({ context, createBase });
         context.models.Author = author({ context, createBase });
         context.models.HomepageLayoutData = homepageLayoutData({ createBase });
         context.models.HomepageLayoutSchema = homepageLayoutSchema({ createBase });
-        context.models.Page = page({ createBase });
-        context.models.Tag = tag({ createBase });
+        context.models.Page = page({ context, createBase });
+        context.models.Tag = tag({ context, createBase });
         context.models.createBase = createBase;
 
         // // Although not required, it's often convenient to have all of your models available via context.
