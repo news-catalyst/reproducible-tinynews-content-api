@@ -1,5 +1,6 @@
 import useGqlHandler from "./useGqlHandler";
 import { CREATE_ARTICLE, LIST_ARTICLES } from "./graphql/articles";
+import { CREATE_AUTHOR, LIST_AUTHORS } from "./graphql/authors";
 
 /**
  * This is a simple test that asserts basic CRUD operations work as expected.
@@ -11,6 +12,45 @@ describe("CRUD Test", () => {
     const { invoke } = useGqlHandler();
 
     it("should be able to perform basic CRUD operations", async () => {
+        // 1. Let's create a couple of articles.
+        let [author1] = await invoke({
+            body: {
+                query: CREATE_AUTHOR,
+                variables: {
+                    data: {
+                        name: {
+                            values: [
+                              {
+                                value: "Jacqui Lough",
+                                locale: "bdcdaca31349dc6bb7ab64fc9058c1d7c2b5804e7c874cd8"
+                              }
+                            ]
+                        },
+                        title: {
+                            values: [
+                              {
+                                value: "Staff Writer",
+                                locale: "bdcdaca31349dc6bb7ab64fc9058c1d7c2b5804e7c874cd8"
+                              }
+                            ]
+                          },
+                          bio: {
+                            values: [
+                              {
+                                value: "Jacqui Lough is a staff writer.",
+                                locale: "bdcdaca31349dc6bb7ab64fc9058c1d7c2b5804e7c874cd8"
+                              }
+                            ]
+                          },
+                          twitter: "@jacqui",
+                          slug: "jacqui-lough",
+                          photoUrl: "http://imgur.com/photo.jpg"
+                    }
+                }
+            }
+        });
+        console.log("author1:", author1);
+
         // 1. Let's create a couple of articles.
         let [article1] = await invoke({
             body: {
