@@ -66,37 +66,38 @@ export default {
 
     type Article {
         id: ID
-        headline: String
-        content: String
+        headline: I18NStringValue
+        content: I18NStringValue
         authorSlugs: String
         slug: String
         customByline: String
-        searchTitle: String
-        searchDescription: String
-        twitterTitle: String
-        twitterDescription: String
-        facebookTitle: String
-        facebookDescription: String
+        searchTitle: I18NStringValue
+        searchDescription: I18NStringValue
+        twitterTitle: I18NStringValue
+        twitterDescription: I18NStringValue
+        facebookTitle: I18NStringValue
+        facebookDescription: I18NStringValue
         createdOn: DateTime
         updatedOn: DateTime
         firstPublishedOn: DateTime
         lastPublishedOn: DateTime
         category: Category
+        authors: [Author]
     }
 
     input ArticleInput {
         id: ID
-        headline: String!
-        content: String
+        headline: I18NStringValueInput
+        content: I18NStringValueInput
         authorSlugs: String
         slug: String
         customByline: String
-        searchTitle: String
-        searchDescription: String
-        twitterTitle: String
-        twitterDescription: String
-        facebookTitle: String
-        facebookDescription: String
+        searchTitle: I18NStringValueInput
+        searchDescription: I18NStringValueInput
+        twitterTitle: I18NStringValueInput
+        twitterDescription: I18NStringValueInput
+        facebookTitle: I18NStringValueInput
+        facebookDescription: I18NStringValueInput
         firstPublishedOn: DateTime
         lastPublishedOn: DateTime
         category: ID

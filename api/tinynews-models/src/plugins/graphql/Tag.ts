@@ -36,12 +36,12 @@ export default {
 
     type Tag {
         id: ID
-        title: String
+        title: I18NStringValue
         slug: String
     }
 
     input TagInput {
-        title: String
+        title: I18NStringValueInput
         slug: String
     }
 

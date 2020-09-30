@@ -1,30 +1,31 @@
 // @ts-ignore
-import { withFields, withName, string, ref, pipe } from "@webiny/commodo";
+import { withFields, withName, string, ref } from "@webiny/commodo";
 import { flow } from "lodash";
-import { validation } from "@webiny/validation";
+import { i18nString } from "@webiny/api-i18n/fields";
+import { Context as APIContext } from "@webiny/graphql/types";
+import { Context as I18NContext } from "@webiny/api-i18n/types";
+import { Context as CommodoContext } from "@webiny/api-plugin-commodo-db-proxy/types";
 
-/**
- * A simple "Article" data model, that consists of a couple of simple fields.
- *
- * @see https://docs.webiny.com/docs/api-development/commodo/introduction
- * @see https://github.com/webiny/commodo/tree/master
- */
-// style using `flow` found in https://github.com/fsdevcoder/webiny-js-new/blob/68e2533a1a7c00124f57f6b73336463f122968ad/packages/api-security/src/plugins/models/securityGroup.model.ts
-export default ({ createBase, context }) => {
-    const Article: any = flow(
+export type Article = {
+    createBase: any;
+    context: APIContext & I18NContext & CommodoContext;
+};
+
+export default ({ context, createBase }: Article) => {
+    return flow(
         withName("Article"),
         withFields(() => ({
-            headline: string({ validation: validation.create("required,minLength:3") }),
-            content: string(),
+            headline: i18nString({ context }),
+            content: i18nString({ context }),
             authorSlugs: string(),
             customByline: string(),
             slug: string(),
-            searchTitle: string(),
-            searchDescription: string(),
-            twitterTitle: string(),
-            twitterDescription: string(),
-            facebookTitle: string(),
-            facebookDescription: string(),
+            searchTitle: i18nString({ context }),
+            searchDescription: i18nString({ context }),
+            twitterTitle: i18nString({ context }),
+            twitterDescription: i18nString({ context }),
+            facebookTitle: i18nString({ context }),
+            facebookDescription: i18nString({ context }),
             authors: ref({
                 list: true,
                 instanceOf: context.models.Author
@@ -33,34 +34,6 @@ export default ({ createBase, context }) => {
                 list: false,
                 instanceOf: context.models.Category
             })
-        })),
+        }))
     )(createBase());
-
-    return Article;
 };
-
-// export default ({ createBase }) => 
-//     pipe(
-//         withName("Article"),
-//         withFields(() => ({
-//             // A simple "string" field, with a couple of validators attached.
-//             headline: string({ validation: validation.create("required,minLength:3") }),
-//             content: string(),
-//             authorSlugs: string(),
-//             customByline: string(),
-//             slug: string(),
-//             searchTitle: string(),
-//             searchDescription: string(),
-//             twitterTitle: string(),
-//             twitterDescription: string(),
-//             facebookTitle: string(),
-//             facebookDescription: string(),
-//             // authors: ref({ instanceOf: authorModel, list: true }),
-//             category: ref({
-//                 instanceOf: Category,
-//                 list: false
-//             })
-
-//             // tags: ref({ instanceOf: tagModel, list: true }),
-//         }))
-//     )(createBase());

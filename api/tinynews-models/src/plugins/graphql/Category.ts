@@ -36,13 +36,13 @@ export default {
 
     type Category {
         id: ID
-        title: String
+        title: I18NStringValue
         slug: String
     }
 
     input CategoryInput {
         id: ID
-        title: String
+        title: I18NStringValueInput
         slug: String
     }
 

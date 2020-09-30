@@ -12,11 +12,6 @@ export type Author = {
 };
 
 export default ({ context, createBase }: Author) => {
-    // let defaultLocale = null;
-    // if (context.i18n.getDefaultLocale()) {
-    //     defaultLocale = context.i18n.getDefaultLocale().id;
-    // }
-
     return flow(
         withName("Author"),
         withFields({
@@ -30,22 +25,3 @@ export default ({ context, createBase }: Author) => {
         })
     )(createBase());
 };
-
-
-
-// export default ({ createBase, context }) => {
-//     const Author: any = flow(
-//         withName("Author"),
-//         withFields(() => ({
-//             name: string(),
-//             title: i18nString({ context }),
-//             bio: string(),
-//             twitter: string(),
-//             photoUrl: string(),
-//             staff: boolean(),
-//             slug: string(),
-//         })),
-//     )(createBase());
-
-//     return Author;
-// };

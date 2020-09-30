@@ -1,26 +1,29 @@
 // @ts-ignore
-import { withFields, withName, i18nString, string, pipe } from "@webiny/commodo";
-import { validation } from "@webiny/validation";
+import { withFields, withName, string, ref } from "@webiny/commodo";
+import { flow } from "lodash";
+import { i18nString } from "@webiny/api-i18n/fields";
+import { Context as APIContext } from "@webiny/graphql/types";
+import { Context as I18NContext } from "@webiny/api-i18n/types";
+import { Context as CommodoContext } from "@webiny/api-plugin-commodo-db-proxy/types";
 
-/**
- * A simple "Article" data model, that consists of a couple of simple fields.
- *
- * @see https://docs.webiny.com/docs/api-development/commodo/introduction
- * @see https://github.com/webiny/commodo/tree/master
- */
-export default ({ createBase }) =>
-    pipe(
+export type Page = {
+    createBase: any;
+    context: APIContext & I18NContext & CommodoContext;
+};
+
+export default ({ context, createBase }: Page) => {
+    return flow(
         withName("Page"),
         withFields(() => ({
-            // A simple "string" field, with a couple of validators attached.
-            headline: i18nString({ validation: validation.create("required,minLength:3") }),
-            content: i18nString(),
+            headline: i18nString({ context }),
+            content: i18nString({ context }),
             slug: string(),
-            searchTitle: i18nString(),
-            searchDescription: i18nString(),
-            twitterTitle: i18nString(),
-            twitterDescription: i18nString(),
-            facebookTitle: i18nString(),
-            facebookDescription: i18nString(),
+            searchTitle: i18nString({ context }),
+            searchDescription: i18nString({ context }),
+            twitterTitle: i18nString({ context }),
+            twitterDescription: i18nString({ context }),
+            facebookTitle: i18nString({ context }),
+            facebookDescription: i18nString({ context }),
         }))
     )(createBase());
+};
