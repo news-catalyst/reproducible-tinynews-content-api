@@ -1,5 +1,5 @@
 // @ts-ignore
-import { withFields, withName, string, ref } from "@webiny/commodo";
+import { withFields, withName, string, datetime, ref } from "@webiny/commodo";
 import { flow } from "lodash";
 import { i18nString } from "@webiny/api-i18n/fields";
 import { Context as APIContext } from "@webiny/graphql/types";
@@ -38,6 +38,8 @@ export default ({ context, createBase }: Article) => {
                 list: true,
                 instanceOf: context.models.Tag
             }),
+            firstPublishedOn: datetime(),
+            lastPublishedOn: datetime(),
         }))
     )(createBase());
 };
