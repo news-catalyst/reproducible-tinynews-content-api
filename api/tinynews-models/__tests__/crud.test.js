@@ -10,6 +10,7 @@ import { CREATE_AUTHOR, LIST_AUTHORS } from "./graphql/authors";
  */
 describe("CRUD Test", () => {
     const { invoke } = useGqlHandler();
+    const LOCALE_ID = "5f72a88c08c5c000077849bd";
 
     it("should be able to perform basic CRUD operations", async () => {
         // 1. Let's create a couple of articles.
@@ -23,7 +24,7 @@ describe("CRUD Test", () => {
                                 values: [
                                     {
                                         value: "Staff Writer",
-                                        locale: "bdcdaca31349dc6bb7ab64fc9058c1d7c2b5804e7c874cd8"
+                                        locale: LOCALE_ID,
                                     }
                                 ]
                             },
@@ -31,7 +32,7 @@ describe("CRUD Test", () => {
                               values: [
                                   {
                                     value: "Jacqui Lough is a staff writer.",
-                                    locale: "bdcdaca31349dc6bb7ab64fc9058c1d7c2b5804e7c874cd8"
+                                    locale: LOCALE_ID,
                                   }
                               ]
                             },
@@ -54,7 +55,7 @@ describe("CRUD Test", () => {
                             values: [
                                 {
                                     value: "Article 1",
-                                    locale: "bdcdaca31349dc6bb7ab64fc9058c1d7c2b5804e7c874cd8"
+                                    locale: LOCALE_ID,
                                 }
                             ]
                         }
@@ -73,7 +74,7 @@ describe("CRUD Test", () => {
                             values: [
                                 {
                                     value: "Article 2",
-                                    locale: "bdcdaca31349dc6bb7ab64fc9058c1d7c2b5804e7c874cd8"
+                                    locale: LOCALE_ID,
                                 }
                             ]
                         }
@@ -93,7 +94,7 @@ describe("CRUD Test", () => {
                             values: [
                                 {
                                     value: "Article 3",
-                                    locale: "bdcdaca31349dc6bb7ab64fc9058c1d7c2b5804e7c874cd8"
+                                    locale: LOCALE_ID,
                                 }
                             ]
                         }
