@@ -1,5 +1,5 @@
 // @ts-ignore
-import { withFields, withName, string, datetime, ref } from "@webiny/commodo";
+import { withFields, withHooks, withName, string, datetime, ref } from "@webiny/commodo";
 import { flow } from "lodash";
 import { i18nString } from "@webiny/api-i18n/fields";
 import { Context as APIContext } from "@webiny/graphql/types";
@@ -11,8 +11,8 @@ export type Article = {
     context: APIContext & I18NContext & CommodoContext;
 };
 
-export default ({ context, createBase }: Article) => {
-    return flow(
+export default ({ context, createBase }) => {
+    const Article: any = flow(
         withName("Article"),
         withFields(() => ({
             headline: i18nString({ context }),
@@ -40,6 +40,14 @@ export default ({ context, createBase }: Article) => {
             }),
             firstPublishedOn: datetime(),
             lastPublishedOn: datetime(),
-        }))
+        })),
+        withHooks({
+            async beforeCreate() {
+                const existingArticle = await Article.findOne({ query: { slug: this.slug } });
+                if (existingArticle) {
+                    throw Error(`Article with slug "${this.slug}" already exists.`);
+                }
+            },
+        })
     )(createBase());
 };
