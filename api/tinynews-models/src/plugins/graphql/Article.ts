@@ -81,6 +81,7 @@ export default {
         updatedOn: DateTime
         firstPublishedOn: DateTime
         lastPublishedOn: DateTime
+        published: Boolean
         category: Category
         authors: [Author]
         tags: [Tag]
@@ -101,6 +102,7 @@ export default {
         facebookDescription: I18NStringValueInput
         firstPublishedOn: DateTime
         lastPublishedOn: DateTime
+        published: Boolean
         category: ID
         authors: [ID]
         tags: [ID]
