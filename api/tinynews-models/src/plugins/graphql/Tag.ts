@@ -90,7 +90,7 @@ export default {
         // With the generic resolvers, we also rely on the "hasScope" helper function from the
         // "@webiny/api-security" package, in order to define the required security scopes (permissions).
         getTag: hasScope("tags:get")(resolveGet(tagFetcher)),
-        listCategories: hasScope("tags:list")(resolveList(tagFetcher))
+        listTags: hasScope("tags:list")(resolveList(tagFetcher))
     },
     TagMutation: {
         // With the generic resolvers, we also rely on the "hasScope" helper function from the
