@@ -47,6 +47,9 @@ export default {
         facebookDescription: I18NStringValue
         createdOn: DateTime
         updatedOn: DateTime
+        firstPublishedOn: DateTime
+        lastPublishedOn: DateTime
+        published: Boolean
     }
 
     input PageInput {
@@ -60,6 +63,9 @@ export default {
         twitterDescription: I18NStringValueInput
         facebookTitle: I18NStringValueInput
         facebookDescription: I18NStringValueInput
+        firstPublishedOn: DateTime
+        lastPublishedOn: DateTime
+        published: Boolean
     }
 
     input PageListWhere {
