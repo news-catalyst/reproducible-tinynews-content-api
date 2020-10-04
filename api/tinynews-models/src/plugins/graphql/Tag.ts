@@ -38,11 +38,13 @@ export default {
         id: ID
         title: I18NStringValue
         slug: String
+        published: Boolean
     }
 
     input TagInput {
         title: I18NStringValueInput
         slug: String
+        published: Boolean
     }
 
     input TagListWhere {
