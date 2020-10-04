@@ -2,14 +2,6 @@
 import { withFields, withHooks, withName, string, datetime, boolean, ref } from "@webiny/commodo";
 import { flow } from "lodash";
 import { i18nString } from "@webiny/api-i18n/fields";
-import { Context as APIContext } from "@webiny/graphql/types";
-import { Context as I18NContext } from "@webiny/api-i18n/types";
-import { Context as CommodoContext } from "@webiny/api-plugin-commodo-db-proxy/types";
-
-export type Article = {
-    createBase: any;
-    context: APIContext & I18NContext & CommodoContext;
-};
 
 export default ({ context, createBase }) => {
     const Article: any = flow(
@@ -38,9 +30,9 @@ export default ({ context, createBase }) => {
                 list: true,
                 instanceOf: context.models.Tag
             }),
-            published: boolean({ value: false }),
             firstPublishedOn: datetime(),
             lastPublishedOn: datetime(),
+            published: boolean({ value: false })
         })),
         withHooks({
             async beforeCreate() {
@@ -51,4 +43,5 @@ export default ({ context, createBase }) => {
             },
         })
     )(createBase());
+    return Article;
 };
