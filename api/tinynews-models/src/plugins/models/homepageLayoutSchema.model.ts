@@ -7,7 +7,7 @@ import { withFields, withName, string, pipe } from "@webiny/commodo";
  * @see https://docs.webiny.com/docs/api-development/commodo/introduction
  * @see https://github.com/webiny/commodo/tree/master
  */
-export default ({ createBase }) =>
+export default ({ context, createBase }) =>
     pipe(
         withName("HomepageLayoutSchema"),
         withFields(() => ({
