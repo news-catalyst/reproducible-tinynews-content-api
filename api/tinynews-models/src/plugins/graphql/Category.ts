@@ -38,12 +38,14 @@ export default {
         id: ID
         title: I18NStringValue
         slug: String
+        published: Boolean
     }
 
     input CategoryInput {
         id: ID
         title: I18NStringValueInput
         slug: String
+        published: Boolean
     }
 
     input CategoryListWhere {

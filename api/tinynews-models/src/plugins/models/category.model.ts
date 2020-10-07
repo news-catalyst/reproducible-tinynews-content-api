@@ -1,5 +1,5 @@
 // @ts-ignore
-import { withFields, withName, string } from "@webiny/commodo";
+import { withFields, withName, string, boolean } from "@webiny/commodo";
 import { flow } from "lodash";
 import { i18nString } from "@webiny/api-i18n/fields";
 import { Context as APIContext } from "@webiny/graphql/types";
@@ -16,7 +16,8 @@ export default ({ context, createBase }: Category) => {
         withName("Category"),
         withFields({
             title: i18nString({ context }),
-            slug: string()
+            slug: string(),
+            published: boolean({ value: false })
         })
     )(createBase());
 };
