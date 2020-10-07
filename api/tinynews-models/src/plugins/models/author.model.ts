@@ -22,6 +22,7 @@ export default ({ context, createBase }: Author) => {
             photoUrl: string(),
             staff: boolean(),
             slug: string(),
+            published: boolean({ value: false })
         })
     )(createBase());
 };

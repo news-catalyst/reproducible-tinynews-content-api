@@ -45,6 +45,7 @@ export default {
         photoUrl: String
         slug: String
         staff: Boolean
+        published: Boolean
     }
 
     input AuthorInput {
@@ -55,6 +56,7 @@ export default {
         photoUrl: String
         slug: String
         staff: Boolean
+        published: Boolean
     }
 
     input AuthorListWhere {
