@@ -105,36 +105,41 @@ describe("CRUD Test", () => {
 
         console.log("article3:", article3);
 
-    //     // 2. Now that we have articles created, let's see if they come up in a basic listArticles query.
-    //     let [articlesList] = await invoke({
-    //         body: {
-    //             query: LIST_ARTICLES
-    //         }
-    //     });
+        // 2. Now that we have articles created, let's see if they come up in a basic listArticles query.
+        let [articlesList] = await invoke({
+            body: {
+                query: LIST_ARTICLES,
+                variables: {
+                    where: {
+                        headline_contains: "Article"
+                    }
+                }
+            }
+        });
 
-    //     expect(articlesList).toEqual({
-    //         data: {
-    //             articles: {
-    //                 listArticles: {
-    //                     data: [
-    //                         {
-    //                             id: article3.data.articles.createArticle.data.id,
-    //                             headline: { value: "Article 3" },
-    //                         },
-    //                         {
-    //                             id: article2.data.articles.createArticle.data.id,
-    //                             headline: { value: "Article 2" },
-    //                         },
-    //                         {
-    //                             id: article1.data.articles.createArticle.data.id,
-    //                             headline: { value: "Article 1" },
-    //                         }
-    //                     ],
-    //                     error: null
-    //                 }
-    //             }
-    //         }
-    //     });
+        expect(articlesList).toEqual({
+            data: {
+                articles: {
+                    listArticles: {
+                        data: [
+                            {
+                                id: article3.data.articles.createArticle.data.id,
+                                headline: { value: "Article 3" },
+                            },
+                            {
+                                id: article2.data.articles.createArticle.data.id,
+                                headline: { value: "Article 2" },
+                            },
+                            {
+                                id: article1.data.articles.createArticle.data.id,
+                                headline: { value: "Article 1" },
+                            }
+                        ],
+                        error: null
+                    }
+                }
+            }
+        });
     // });
 
     // it("should throw a validation error if headline is invalid", async () => {
