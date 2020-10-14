@@ -26,7 +26,6 @@ export const resolveList = (getModel: GetModelType): FieldResolver => async (
       totalCount: requiresTotalCount(info)
   };
 
-  console.log("args:", args);
   if (args.where && args.where.headline_contains) {
     console.log("found arg for headline_contains:", args.where.headline_contains)
     const regex = new RegExp(`${args.where.headline_contains}`, 'i');
@@ -34,6 +33,15 @@ export const resolveList = (getModel: GetModelType): FieldResolver => async (
     // todo: figure out how to keep other bits of the `where` (line #19) except this?
     // or maybe it's fine to just use `delete` here.
     delete find.query.headline_contains;
+  }
+
+  if (args.where && args.where.authorSlugs_contains) {
+    console.log("found arg for authorSlugs_contains:", args.where.authorSlugs_contains)
+    const regex = new RegExp(`${args.where.authorSlugs_contains}`, 'i');
+    find.query.authorSlugs = { $regex: regex }
+    // todo: figure out how to keep other bits of the `where` (line #19) except this?
+    // or maybe it's fine to just use `delete` here.
+    delete find.query.authorSlugs_contains;
   }
 
   if (args.search && args.search.query) {
