@@ -1,5 +1,5 @@
 // @ts-ignore
-import { withFields, withHooks, withName, string, boolean } from "@webiny/commodo";
+import { withFields, withHooks, withName, string, boolean, ref } from "@webiny/commodo";
 import { flow } from "lodash";
 import { i18nString } from "@webiny/api-i18n/fields";
 import { Context as APIContext } from "@webiny/graphql/types";
@@ -17,7 +17,12 @@ export default ({ context, createBase }) => {
         withFields({
             title: i18nString({ context }),
             slug: string(),
-            published: boolean({ value: false })
+            published: boolean({ value: false }),
+            articles: ref({
+                list: true,
+                instanceOf: context.models.Article,
+                using: context.models.Article2Book
+            })
         }),
         withHooks({
             async beforeCreate() {

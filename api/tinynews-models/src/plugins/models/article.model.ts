@@ -42,7 +42,8 @@ export default ({ context, createBase }: Article) => {
             }),
             tags: ref({
                 list: true,
-                instanceOf: context.models.Tag
+                instanceOf: context.models.Tag,
+                using: context.models.Article2Book
             })
         }))
     )(createBase());
