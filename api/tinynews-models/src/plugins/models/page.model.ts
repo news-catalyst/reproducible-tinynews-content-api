@@ -1,5 +1,6 @@
 // @ts-ignore
-import { withFields, withName, string, datetime, boolean } from "@webiny/commodo";
+import { withFields, withName, string, boolean } from "@webiny/commodo";
+import { date } from "commodo-fields-date";
 import { flow } from "lodash";
 import { i18nString } from "@webiny/api-i18n/fields";
 import { Context as APIContext } from "@webiny/graphql/types";
@@ -24,8 +25,8 @@ export default ({ context, createBase }: Page) => {
             twitterDescription: i18nString({ context }),
             facebookTitle: i18nString({ context }),
             facebookDescription: i18nString({ context }),
-            firstPublishedOn: datetime(),
-            lastPublishedOn: datetime(),
+            firstPublishedOn: date(),
+            lastPublishedOn: date(),
             published: boolean({ value: false })
         }))
     )(createBase());
