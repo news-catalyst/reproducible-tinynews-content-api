@@ -49,6 +49,7 @@ export default {
 
     input TagListWhere {
         title: String
+        slug: String
     }
 
     input TagListSort {

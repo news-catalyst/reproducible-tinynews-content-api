@@ -3,9 +3,9 @@ import {
     resolveCreate,
     resolveDelete,
     resolveGet,
-    resolveList,
     resolveUpdate
 } from "@webiny/commodo-graphql";
+import { resolveList } from "./resolver";
 
 const articleFetcher = ctx => ctx.models.Article;
 
@@ -70,6 +70,7 @@ export default {
         content: I18NStringValue
         authorSlugs: String
         slug: String
+        headlineSearch: String
         customByline: String
         searchTitle: I18NStringValue
         searchDescription: I18NStringValue
@@ -93,6 +94,7 @@ export default {
         content: I18NStringValueInput
         authorSlugs: String
         slug: String
+        headlineSearch: String
         customByline: String
         searchTitle: I18NStringValueInput
         searchDescription: I18NStringValueInput
@@ -110,11 +112,15 @@ export default {
 
     input ArticleListWhere {
         headline: String
+        headline_contains: String
+        slug: String
+        authorSlugs_contains: String
     }
 
     input ArticleListSort {
         headline: Int
         createdOn: Int
+        firstPublishedOn: Int
     }
 
     type ArticleResponse {

@@ -19,6 +19,7 @@ export default ({ context, createBase }: Article) => {
         withFields(() => ({
             headline: i18nString({ context }),
             content: i18nString({ context }),
+            headlineSearch: string(),
             slug: string(),
             authorSlugs: string(),
             customByline: string(),
