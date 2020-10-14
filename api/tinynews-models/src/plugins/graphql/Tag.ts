@@ -39,6 +39,7 @@ export default {
         title: I18NStringValue
         slug: String
         published: Boolean
+        articles: [Article]
     }
 
     input TagInput {

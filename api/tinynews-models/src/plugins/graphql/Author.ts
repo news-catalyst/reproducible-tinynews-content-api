@@ -46,6 +46,7 @@ export default {
         slug: String
         staff: Boolean
         published: Boolean
+        articles: [Article]
     }
 
     input AuthorInput {
