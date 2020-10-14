@@ -61,6 +61,7 @@ export default {
 
     input AuthorListWhere {
         name: String
+        slug: String
     }
 
     input AuthorListSort {

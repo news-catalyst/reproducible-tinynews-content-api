@@ -114,7 +114,7 @@ export default {
         headline: String
         headline_contains: String
         slug: String
-        slug_contains: String
+        authorSlugs_contains: String
     }
 
     input ArticleListSort {
