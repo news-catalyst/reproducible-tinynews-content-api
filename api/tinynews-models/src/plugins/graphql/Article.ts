@@ -105,9 +105,9 @@ export default {
         firstPublishedOn: DateTime
         lastPublishedOn: DateTime
         published: Boolean
-        category: ID
-        authors: [ID]
-        tags: [ID]
+        category: RefInput
+        authors: [RefInput]
+        tags: [RefInput]
     }
 
     input ArticleListWhere {

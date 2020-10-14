@@ -8,6 +8,8 @@ import page from "./models/page.model";
 import tag from "./models/tag.model";
 import homepageLayoutData from "./models/homepageLayoutData.model";
 import homepageLayoutSchema from "./models/homepageLayoutSchema.model";
+import article2author from "./models/article2author.model";
+import article2tag from "./models/article2tag.model";
 
 /**
  * Use this "context" plugin as a way to aggregate all of service's Commodo models, and assign them
@@ -68,6 +70,8 @@ export default () => ({
         context.models.HomepageLayoutSchema = homepageLayoutSchema({ context, createBase });
         context.models.Page = page({ context, createBase });
         context.models.Tag = tag({ context, createBase });
+        context.models.Article2Author = article2author({ context, createBase });
+        context.models.Article2Tag = article2tag({ context, createBase });
         context.models.createBase = createBase;
 
         // // Although not required, it's often convenient to have all of your models available via context.

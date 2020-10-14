@@ -21,7 +21,7 @@ export default ({ context, createBase }) => {
             articles: ref({
                 list: true,
                 instanceOf: context.models.Article,
-                using: context.models.Article2Book
+                using: context.models.Article2Tag
             })
         }),
         withHooks({

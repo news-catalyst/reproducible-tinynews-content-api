@@ -1,5 +1,5 @@
 // @ts-ignore
-import { withFields, withName, boolean, string } from "@webiny/commodo";
+import { withFields, withName, boolean, string, ref } from "@webiny/commodo";
 import { i18nString } from "@webiny/api-i18n/fields";
 import { flow } from "lodash";
 import { Context as APIContext } from "@webiny/graphql/types";
@@ -22,7 +22,12 @@ export default ({ context, createBase }: Author) => {
             photoUrl: string(),
             staff: boolean(),
             slug: string(),
-            published: boolean({ value: false })
+            published: boolean({ value: false }),
+            articles: ref({
+                list: true,
+                instanceOf: context.models.Article,
+                using: context.models.Article2Author
+            })
         })
     )(createBase());
 };

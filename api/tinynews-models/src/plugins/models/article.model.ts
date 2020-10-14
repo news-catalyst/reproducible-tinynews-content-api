@@ -34,7 +34,8 @@ export default ({ context, createBase }: Article) => {
             published: boolean({ value: false }),
             authors: ref({
                 list: true,
-                instanceOf: context.models.Author
+                instanceOf: context.models.Author,
+                using: context.models.Article2Author
             }),
             category: ref({
                 list: false,
@@ -43,7 +44,7 @@ export default ({ context, createBase }: Article) => {
             tags: ref({
                 list: true,
                 instanceOf: context.models.Tag,
-                using: context.models.Article2Book
+                using: context.models.Article2Tag
             })
         }))
     )(createBase());
