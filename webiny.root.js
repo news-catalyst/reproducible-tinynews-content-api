@@ -1,6 +1,6 @@
 module.exports = {
     template: "@webiny/cwp-template-full@4.12.1",
-    projectName: "07October2020B-tinynews-contentapi",
+    projectName: "14octa-contentapi",
     cli: {
         plugins: [
             require("@webiny/cli-plugin-deploy-components")(),
