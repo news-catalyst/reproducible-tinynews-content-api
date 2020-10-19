@@ -1,5 +1,5 @@
 // @ts-ignore
-import { withFields, withName, string, boolean } from "@webiny/commodo";
+import { withFields, withName, withHooks, string, boolean } from "@webiny/commodo";
 import { date } from "commodo-fields-date";
 import { flow } from "lodash";
 import { i18nString } from "@webiny/api-i18n/fields";
@@ -13,7 +13,7 @@ export type Page = {
 };
 
 export default ({ context, createBase }: Page) => {
-    return flow(
+    const Page: any = flow(
         withName("Page"),
         withFields(() => ({
             headline: i18nString({ context }),
@@ -28,6 +28,15 @@ export default ({ context, createBase }: Page) => {
             firstPublishedOn: date(),
             lastPublishedOn: date(),
             published: boolean({ value: false })
-        }))
+        })),
+        withHooks({
+            async beforeCreate() {
+                const existing = await Page.findOne({ query: { slug: this.slug } });
+                if (existing) {
+                    throw Error(`Page with slug "${this.slug}" already exists.`);
+                }
+            },
+        })
     )(createBase());
+    return Page;
 };
