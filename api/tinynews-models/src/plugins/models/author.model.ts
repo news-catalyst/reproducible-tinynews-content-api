@@ -1,5 +1,5 @@
 // @ts-ignore
-import { withFields, withName, boolean, string, ref } from "@webiny/commodo";
+import { withFields, withName, withHooks, boolean, string, ref } from "@webiny/commodo";
 import { i18nString } from "@webiny/api-i18n/fields";
 import { flow } from "lodash";
 import { Context as APIContext } from "@webiny/graphql/types";
@@ -12,7 +12,7 @@ export type Author = {
 };
 
 export default ({ context, createBase }: Author) => {
-    return flow(
+    const Author: any = flow(
         withName("Author"),
         withFields({
             name: string(),
@@ -28,6 +28,15 @@ export default ({ context, createBase }: Author) => {
                 instanceOf: context.models.Article,
                 using: context.models.Article2Author
             })
+        }),
+        withHooks({
+            async beforeCreate() {
+                const existing = await Author.findOne({ query: { slug: this.slug } });
+                if (existing) {
+                    throw Error(`Author with slug "${this.slug}" already exists.`);
+                }
+            },
         })
     )(createBase());
+    return Author;
 };
