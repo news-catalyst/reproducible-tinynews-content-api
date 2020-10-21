@@ -6,6 +6,7 @@ import author from "./models/author.model";
 import category from "./models/category.model";
 import page from "./models/page.model";
 import tag from "./models/tag.model";
+import siteMetadata from "./models/siteMetadata.model";
 import homepageLayoutData from "./models/homepageLayoutData.model";
 import homepageLayoutSchema from "./models/homepageLayoutSchema.model";
 import article2author from "./models/article2author.model";
@@ -69,32 +70,11 @@ export default () => ({
         context.models.HomepageLayoutData = homepageLayoutData({ context, createBase });
         context.models.HomepageLayoutSchema = homepageLayoutSchema({ context, createBase });
         context.models.Page = page({ context, createBase });
+        context.models.SiteMetadata = siteMetadata({ context, createBase });
         context.models.Tag = tag({ context, createBase });
         context.models.Article2Author = article2author({ context, createBase });
         context.models.Article2Tag = article2tag({ context, createBase });
         context.models.createBase = createBase;
-
-        async function setupLayouts() {
-            console.log("setting up layout - test run");
-
-            try {
-                const bfs = new context.models.HomepageLayoutSchema();
-                bfs.populate({ name: "Big Featured Story", data: "{ \"featured\":\"string\" }" });
-
-                await bfs.save();
-
-                const lpsl = new context.models.HomepageLayoutSchema();
-                lpsl.populate({ 
-                    name: "Large Package Story lead", 
-                    data: "{ \"featured\":\"string\",\"subfeatured-left\":\"string\",\"subfeatured-middle\":\"string\",\"subfeatured-right\":\"string\"}"
-                });
-
-                await lpsl.save();
-            } catch (e) {
-                console.log("failed creating schema: ", e);
-            }
-        }
-        setupLayouts();
 
         // // Although not required, it's often convenient to have all of your models available via context.
         // context.models = {

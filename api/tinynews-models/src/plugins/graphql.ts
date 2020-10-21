@@ -18,6 +18,7 @@ import homepageLayoutData from "./graphql/HomepageLayoutData";
 import homepageLayoutSchema from "./graphql/HomepageLayoutSchema";
 import page from "./graphql/Page";
 import tag from "./graphql/Tag";
+import siteMetadata from "./graphql/SiteMetadata";
 
 /**
  * As the name itself suggests, the "graphql-schema" plugin enables us to define our service's GraphQL schema.
@@ -43,6 +44,7 @@ const plugin: GraphQLSchemaPlugin = {
             ${homepageLayoutData.typeDefs}
             ${homepageLayoutSchema.typeDefs}
             ${page.typeDefs}
+            ${siteMetadata.typeDefs}
             ${tag.typeDefs}
 
             type CmsBoolean {
@@ -258,6 +260,7 @@ const plugin: GraphQLSchemaPlugin = {
                 homepageLayoutDatas: HomepageLayoutDataQuery
                 homepageLayoutSchemas: HomepageLayoutSchemaQuery
                 pages: PageQuery
+                siteMetadatas: SiteMetadataQuery
                 tags: TagQuery
             }
 
@@ -268,6 +271,7 @@ const plugin: GraphQLSchemaPlugin = {
                 homepageLayoutDatas: HomepageLayoutDataMutation
                 homepageLayoutSchemas: HomepageLayoutSchemaMutation
                 pages: PageMutation
+                siteMetadatas: SiteMetadataMutation
                 tags: TagMutation
             }
         `,
@@ -281,7 +285,8 @@ const plugin: GraphQLSchemaPlugin = {
                     homepageLayoutDatas: emptyResolver,
                     homepageLayoutSchemas: emptyResolver,
                     pages: emptyResolver,
-                    tags: emptyResolver
+                    siteMetadatas: emptyResolver,
+                    tags: emptyResolver,
                 },
                 Mutation: {
                     // Needs to be here, otherwise the resolvers below cannot return any result.
@@ -291,7 +296,8 @@ const plugin: GraphQLSchemaPlugin = {
                     homepageLayoutDatas: emptyResolver,
                     homepageLayoutSchemas: emptyResolver,
                     pages: emptyResolver,
-                    tags: emptyResolver
+                    siteMetadatas: emptyResolver,
+                    tags: emptyResolver,
                 }
             },
             article.resolvers,
@@ -300,6 +306,7 @@ const plugin: GraphQLSchemaPlugin = {
             homepageLayoutData.resolvers,
             homepageLayoutSchema.resolvers,
             page.resolvers,
+            siteMetadata.resolvers,
             tag.resolvers,
         )
     }
