@@ -36,9 +36,7 @@ export default {
 
     type SiteMetadata {
         id: ID
-        name: String
-        description: String
-        logo: String
+        data: String
         firstPublishedOn: DateTime
         lastPublishedOn: DateTime
         published: Boolean
@@ -46,21 +44,18 @@ export default {
 
     input SiteMetadataInput {
         id: ID
-        name: String
-        description: String
-        logo: String
+        data: String
         firstPublishedOn: DateTime
         lastPublishedOn: DateTime
         published: Boolean
     }
 
     input SiteMetadataListWhere {
-        name: String
+        id: ID
         published: Boolean
     }
 
     input SiteMetadataListSort {
-        name: Int
         firstPublishedOn: Int
     }
 
