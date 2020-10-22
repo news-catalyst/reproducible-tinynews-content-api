@@ -15,9 +15,7 @@ export default ({ context, createBase }: SiteMetadata) => {
     const SiteMetadata: any = flow(
         withName("SiteMetadata"),
         withFields({
-            name: string(),
-            description: string(),
-            logo: string(),
+            data: string(),
             published: boolean({ value: false }),
             firstPublishedOn: date(),
             lastPublishedOn: date(),
