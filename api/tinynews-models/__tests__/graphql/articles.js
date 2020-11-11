@@ -26,6 +26,25 @@ export const CREATE_ARTICLE = /* GraphQL */ `
     }
 `;
 
+// A basic update "Article" mutation.
+export const UPDATE_ARTICLE = /* GraphQL */ `
+    mutation UpdateArticle($id: ID!, $data: ArticleInput!) {
+        articles {
+            updateArticle(id: $id, data: $data) {
+                data {
+                    id
+                    headline {
+                        values {
+                            value
+                        }
+                    }
+                }
+                error ${ERROR_FIELDS}
+            }
+        }
+    }
+`;
+
 // A basic list "Articles" query.
 export const LIST_ARTICLES = /* GraphQL */ `
     query ListArticles(

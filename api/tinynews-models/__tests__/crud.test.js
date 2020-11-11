@@ -1,5 +1,5 @@
 import useGqlHandler from "./useGqlHandler";
-import { CREATE_ARTICLE, LIST_ARTICLES } from "./graphql/articles";
+import { CREATE_ARTICLE, LIST_ARTICLES, UPDATE_ARTICLE } from "./graphql/articles";
 import { CREATE_AUTHOR, LIST_AUTHORS } from "./graphql/authors";
 
 /**
@@ -10,7 +10,8 @@ import { CREATE_AUTHOR, LIST_AUTHORS } from "./graphql/authors";
  */
 describe("CRUD Test", () => {
     const { invoke } = useGqlHandler();
-    const LOCALE_ID = "5f72a88c08c5c000077849bd";
+    const LOCALE_ID = "5f866e9e1b6160000779b01a";
+    const SECOND_LOCALE_ID = "5f9b54744f82710007c4303c";
 
     it("should be able to perform basic CRUD operations", async () => {
         // 1. Let's create a couple of articles.
@@ -63,18 +64,25 @@ describe("CRUD Test", () => {
                 }
             }
         });
-        console.log("article1:", article1);
+        console.log("article1:", JSON.stringify(article1.data.articles.createArticle.data));
+        let articleID = article1.data.articles.createArticle.data.id;
+        console.log("articleID: ", articleID)
 
-        let [article2] = await invoke({
+        let [updatedArticle] = await invoke({
             body: {
-                query: CREATE_ARTICLE,
+                query: UPDATE_ARTICLE,
                 variables: {
+                    id: articleID,
                     data: {
                         headline: {
                             values: [
                                 {
-                                    value: "Article 2",
+                                    value: "Article 1",
                                     locale: LOCALE_ID,
+                                },
+                                {
+                                    value: "Spanish Headline Article",
+                                    locale: SECOND_LOCALE_ID,
                                 }
                             ]
                         }
@@ -83,27 +91,7 @@ describe("CRUD Test", () => {
             }
         });
 
-        console.log("article2:", article2);
-
-        let [article3] = await invoke({
-            body: {
-                query: CREATE_ARTICLE,
-                variables: {
-                    data: {
-                        headline: {
-                            values: [
-                                {
-                                    value: "Article 3",
-                                    locale: LOCALE_ID,
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        });
-
-        console.log("article3:", article3);
+        console.log("updated article:", JSON.stringify(updatedArticle));
 
         // 2. Now that we have articles created, let's see if they come up in a basic listArticles query.
         let [articlesList] = await invoke({
@@ -122,14 +110,6 @@ describe("CRUD Test", () => {
                 articles: {
                     listArticles: {
                         data: [
-                            {
-                                id: article3.data.articles.createArticle.data.id,
-                                headline: { value: "Article 3" },
-                            },
-                            {
-                                id: article2.data.articles.createArticle.data.id,
-                                headline: { value: "Article 2" },
-                            },
                             {
                                 id: article1.data.articles.createArticle.data.id,
                                 headline: { value: "Article 1" },
