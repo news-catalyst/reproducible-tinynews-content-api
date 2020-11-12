@@ -92,6 +92,8 @@ describe("CRUD Test", () => {
         });
 
         console.log("updated article:", JSON.stringify(updatedArticle));
+        expect(updatedArticle.data.articles.updateArticle.error).toBeNull();
+        expect(updatedArticle.data.articles.updateArticle.data).not.toBeNull();
 
         // 2. Now that we have articles created, let's see if they come up in a basic listArticles query.
         let [articlesList] = await invoke({
