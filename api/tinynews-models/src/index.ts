@@ -1,7 +1,8 @@
 import { createHandler } from "@webiny/handler";
 import apolloServerPlugins from "@webiny/handler-apollo-server";
 import dbProxy from "@webiny/api-plugin-commodo-db-proxy";
-import i18n from "@webiny/api-i18n/plugins/i18n";
+// import i18n from "@webiny/api-i18n/plugins/i18n";
+import i18nPlugins from "@webiny/api-i18n/plugins";
 import securityServicePlugins from "@webiny/api-security/plugins/service";
 import myPlugins from "./plugins";
 
@@ -36,7 +37,7 @@ export const handler = createHandler(
         validateAccessTokenFunction: process.env.VALIDATE_ACCESS_TOKEN_FUNCTION
     }),
 
-    i18n,
+    i18nPlugins(),
 
     // Finally, this represents your plugins. Feel free to add anything that you might need.
     myPlugins()
