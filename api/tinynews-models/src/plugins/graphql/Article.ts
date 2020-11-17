@@ -63,10 +63,26 @@ export default {
         value: Category
         locale: ID!
     }
+    type TestLocaleStringValue {
+        locale: String!
+        value: String
+    }
+    input TestLocaleStringValueInput {
+        locale: String!
+        value: String
+    }
+    type TestLocaleStringValueContainer {
+        values: [TestLocaleStringValue]
+    }
+
+    input TestLocaleStringValueContainerInput {
+        values: [TestLocaleStringValueInput]
+    }
 
     type Article {
         id: ID
         headline: I18NStringValue
+        lang: TestLocaleStringValueContainer
         content: I18NStringValue
         authorSlugs: String
         slug: String
@@ -91,6 +107,7 @@ export default {
     input ArticleInput {
         id: ID
         headline: I18NStringValueInput
+        lang: TestLocaleStringValueContainerInput
         content: I18NStringValueInput
         authorSlugs: String
         slug: String

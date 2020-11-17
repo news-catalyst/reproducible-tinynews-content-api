@@ -57,8 +57,6 @@ export default ({ context, createBase }: Article) => {
         })),
         withHooks({
             async beforeCreate() {
-                console.log("beforeCreate headline values:", this.headline.values);
-                console.log("beforeCreate lang values:", this.lang.values);
                 const existingArticle = await Article.findOne({ query: { slug: this.slug } });
                 if (existingArticle) {
                     throw Error(`Article with slug "${this.slug}" already exists.`);
