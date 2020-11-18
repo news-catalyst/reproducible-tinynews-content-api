@@ -533,7 +533,11 @@ module.exports = () => ({
                     code: "./tinynews-models/build",
                     handler: "handler.handler",
                     memory: 512,
-                    env: apolloServiceEnv
+                    env: {
+                        ...apolloServiceEnv,
+                        I18N_LOCALES_FUNCTION: "${i18nLocales.name}"
+                    },
+                    DEBUG: process.env.DEBUG
                 }
             }
         }

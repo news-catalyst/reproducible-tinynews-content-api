@@ -3,6 +3,8 @@ import neDb from "@webiny/api-plugin-commodo-nedb";
 import { Database } from "@commodo/fields-storage-nedb";
 import securityServicePlugins from "@webiny/api-security/plugins/service";
 import apolloServerPlugins from "@webiny/handler-apollo-server";
+import i18n from "@webiny/api-i18n/plugins/i18n";
+import { mockLocalesPlugins } from "@webiny/api-i18n/testing";
 import myPlugins from "../src/plugins";
 
 /**
@@ -26,11 +28,19 @@ export default ({ database } = {}) => {
                 secret: "secret"
             }
         }),
+
+        i18n,
+        mockLocalesPlugins(),
+
+        // i18nServicePlugins({
+        //     localesFunction: "getLocales"
+        // }),
         myPlugins()
     );
 
     // Let's also create the "invoke" function. This will make handler invocations in actual tests easier and nicer.
     const invoke = async ({ httpMethod = "POST", body, headers = {}, ...rest }) => {
+
         const response = await handler({
             httpMethod,
             headers,

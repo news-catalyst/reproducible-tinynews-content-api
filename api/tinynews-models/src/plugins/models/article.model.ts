@@ -14,10 +14,18 @@ export type Article = {
 };
 
 export default ({ context, createBase }: Article) => {
+    if (context && context.i18n) {
+        console.log("FOUND I18N ON CONTEXT!");
+        console.log("default locale:", context.i18n.getDefaultLocale());
+    } else {
+        console.log(":( did not find i18n on article context :(");
+    }
+
     const Article: any = flow(
         withName("Article"),
         withFields(() => ({
             headline: i18nString({ context }),
+            lang: i18nString({context}),
             content: i18nString({ context }),
             headlineSearch: string(),
             slug: string(),

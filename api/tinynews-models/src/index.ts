@@ -1,6 +1,10 @@
 import { createHandler } from "@webiny/handler";
 import apolloServerPlugins from "@webiny/handler-apollo-server";
 import dbProxy from "@webiny/api-plugin-commodo-db-proxy";
+// import i18n from "@webiny/api-i18n/plugins/i18n";
+// import i18nPlugins from "@webiny/api-i18n/plugins";
+import i18n from "@webiny/api-i18n/plugins/i18n";
+import i18nServicePlugins from "@webiny/api-i18n/plugins/service";
 import securityServicePlugins from "@webiny/api-security/plugins/service";
 import myPlugins from "./plugins";
 
@@ -15,9 +19,9 @@ import myPlugins from "./plugins";
 export const handler = createHandler(
     // A set of plugins, responsible for setting up the Apollo Server.
     apolloServerPlugins({
-        debug: process.env.DEBUG,
+        debug: true,
         server: {
-            introspection: process.env.GRAPHQL_INTROSPECTION,
+            introspection: true,
             playground: process.env.GRAPHQL_PLAYGROUND
         }
     }),
@@ -34,6 +38,14 @@ export const handler = createHandler(
         },
         validateAccessTokenFunction: process.env.VALIDATE_ACCESS_TOKEN_FUNCTION
     }),
+
+    i18n,
+    i18nServicePlugins({
+        localesFunction: process.env.I18N_LOCALES_FUNCTION
+    }),
+
+    // i18nPlugins(),
+    // i18n,
 
     // Finally, this represents your plugins. Feel free to add anything that you might need.
     myPlugins()
