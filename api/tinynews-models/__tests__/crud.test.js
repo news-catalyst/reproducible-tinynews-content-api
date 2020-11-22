@@ -64,9 +64,7 @@ describe("CRUD Test", () => {
                 }
             }
         });
-        console.log("article1:", JSON.stringify(article1.data.articles.createArticle.data));
         let articleID = article1.data.articles.createArticle.data.id;
-        console.log("articleID: ", articleID)
 
         let [updatedArticle] = await invoke({
             body: {
@@ -74,6 +72,7 @@ describe("CRUD Test", () => {
                 variables: {
                     id: articleID,
                     data: {
+                        headlineSearch: "Article 1",
                         headline: {
                             values: [
                                 {
@@ -91,7 +90,6 @@ describe("CRUD Test", () => {
             }
         });
 
-        console.log("updated article:", JSON.stringify(updatedArticle));
         expect(updatedArticle.data.articles.updateArticle.error).toBeNull();
         expect(updatedArticle.data.articles.updateArticle.data).not.toBeNull();
 
@@ -122,7 +120,6 @@ describe("CRUD Test", () => {
                 }
             }
         });
-    // });
 
     // it("should throw a validation error if headline is invalid", async () => {
     //     // The title field is missing, the error should be thrown from the GraphQL and the resolver won't be executedd.
