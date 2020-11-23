@@ -24,6 +24,7 @@ export default ({ context, createBase }: Article) => {
     const Article: any = flow(
         withName("Article"),
         withFields(() => ({
+            availableLocales: string(),
             headline: i18nString({ context }),
             lang: i18nString({context}),
             content: i18nString({ context }),

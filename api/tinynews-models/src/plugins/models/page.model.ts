@@ -16,6 +16,7 @@ export default ({ context, createBase }: Page) => {
     const Page: any = flow(
         withName("Page"),
         withFields(() => ({
+            availableLocales: string(),
             headline: i18nString({ context }),
             content: i18nString({ context }),
             slug: string(),

@@ -36,6 +36,7 @@ export default {
 
     type Page {
         id: ID
+        availableLocales: String
         headline: I18NStringValue
         content: I18NStringValue
         slug: String
@@ -54,6 +55,7 @@ export default {
 
     input PageInput {
         id: ID
+        availableLocales: String
         headline: I18NStringValueInput
         content: I18NStringValueInput
         slug: String
@@ -71,6 +73,7 @@ export default {
     input PageListWhere {
         headline: String
         slug: String
+        availableLocales_contains: String
     }
 
     input PageListSort {
