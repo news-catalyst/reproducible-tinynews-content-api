@@ -81,6 +81,7 @@ export default {
 
     type Article {
         id: ID
+        availableLocales: String
         headline: I18NStringValue
         lang: TestLocaleStringValueContainer
         content: I18NStringValue
@@ -106,6 +107,7 @@ export default {
 
     input ArticleInput {
         id: ID
+        availableLocales: String
         headline: I18NStringValueInput
         lang: TestLocaleStringValueContainerInput
         content: I18NStringValueInput
@@ -132,6 +134,7 @@ export default {
         headline_contains: String
         slug: String
         authorSlugs_contains: String
+        availableLocales_contains: String
     }
 
     input ArticleListSort {

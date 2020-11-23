@@ -30,8 +30,6 @@ export const resolveList = (getModel: GetModelType): FieldResolver => async (
     console.log("found arg for headline_contains:", args.where.headline_contains)
     const regex = new RegExp(`${args.where.headline_contains}`, 'i');
     find.query.headlineSearch = { $regex: regex }
-    // todo: figure out how to keep other bits of the `where` (line #19) except this?
-    // or maybe it's fine to just use `delete` here.
     delete find.query.headline_contains;
   }
 
@@ -39,9 +37,14 @@ export const resolveList = (getModel: GetModelType): FieldResolver => async (
     console.log("found arg for authorSlugs_contains:", args.where.authorSlugs_contains)
     const regex = new RegExp(`${args.where.authorSlugs_contains}`, 'i');
     find.query.authorSlugs = { $regex: regex }
-    // todo: figure out how to keep other bits of the `where` (line #19) except this?
-    // or maybe it's fine to just use `delete` here.
     delete find.query.authorSlugs_contains;
+  }
+
+  if (args.where && args.where.availableLocales_contains) {
+    console.log("found arg for availableLocales_contains:", args.where.availableLocales_contains)
+    const regex = new RegExp(`${args.where.availableLocales_contains}`, 'i');
+    find.query.availableLocales = { $regex: regex }
+    delete find.query.availableLocales_contains;
   }
 
   if (args.search && args.search.query) {
