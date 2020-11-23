@@ -100,6 +100,7 @@ export default {
         firstPublishedOn: DateTime
         lastPublishedOn: DateTime
         published: Boolean
+        googleDocs: String
         category: Category
         authors: [Author]
         tags: [Tag]
@@ -124,6 +125,7 @@ export default {
         firstPublishedOn: DateTime
         lastPublishedOn: DateTime
         published: Boolean
+        googleDocs: String
         category: RefInput
         authors: [RefInput]
         tags: [RefInput]
