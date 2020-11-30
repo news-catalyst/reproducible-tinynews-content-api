@@ -42,6 +42,7 @@ export default ({ context, createBase }: Article) => {
             lastPublishedOn: date(),
             published: boolean({ value: false }),
             googleDocs: string(),
+            docIDs: string(),
             authors: ref({
                 list: true,
                 instanceOf: context.models.Author,

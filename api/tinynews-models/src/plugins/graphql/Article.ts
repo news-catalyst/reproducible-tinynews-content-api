@@ -101,6 +101,7 @@ export default {
         lastPublishedOn: DateTime
         published: Boolean
         googleDocs: String
+        docIDs: String
         category: Category
         authors: [Author]
         tags: [Tag]
@@ -126,6 +127,7 @@ export default {
         lastPublishedOn: DateTime
         published: Boolean
         googleDocs: String
+        docIDs: String
         category: RefInput
         authors: [RefInput]
         tags: [RefInput]
@@ -137,6 +139,7 @@ export default {
         slug: String
         authorSlugs_contains: String
         availableLocales_contains: String
+        docIDs_contains: String
     }
 
     input ArticleListSort {

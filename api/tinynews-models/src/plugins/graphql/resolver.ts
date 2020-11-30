@@ -47,6 +47,13 @@ export const resolveList = (getModel: GetModelType): FieldResolver => async (
     delete find.query.availableLocales_contains;
   }
 
+  if (args.where && args.where.docIDs_contains) {
+    console.log("found arg for docIDs_contains:", args.where.docIDs_contains)
+    const regex = new RegExp(`${args.where.docIDs_contains}`, 'i');
+    find.query.docIDs = { $regex: regex }
+    delete find.query.docIDs_contains;
+  }
+
   if (args.search && args.search.query) {
       find.search = {
           query: args.search.query,
