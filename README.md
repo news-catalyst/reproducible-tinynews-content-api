@@ -23,12 +23,25 @@ Then run the following commands, replacing `prod` with the desired environment (
 
 ```
 $ yarn webiny deploy api --env=prod
-$ yarn webiny deploy apps --env=prod
+```
+
+Then start the admin app locally - it will be pointed at your newly deployed API. 
+
+You need to set a few things up:
+
+* webiny requirements: security, i18n (default locale), page builder, form builder
+* then get a Personal Access Token (PAT) to access the GraphQL API (save this somewhere safe)
+* finally setup the site locales
+
+Here's how:
+
+```
+cd apps/admin
+yarn start
+# this should open the admin in your browser at [http://localhost:3000](http://localhost:3000) - click through the screens
+open http://localhost:3000/users # click "Create Token" on this page for the PAT under Security > Users
+open http://localhost:3000/i18n/locales # add whatever languages this site should support under Languages > Locales (menu)
 ```
 
 Save the API URL returned from the first command somewhere safe. We'll need that to configure the front-end app.
 
-Open the URL returned from the second command, it will bring you the admin webiny cms. Click through to get that up and running. You'll have to do two things here:
-
-* Set up a Personal Access Token; be sure to copy this value somewhere safe.
-* Set up the site locales
