@@ -1,5 +1,5 @@
 {
-	"name": "14octa-contentapi",
+	"name": "contentapi-client-1",
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
