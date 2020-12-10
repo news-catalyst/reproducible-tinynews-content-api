@@ -16,6 +16,7 @@ To create a new version of the API, for instance for a new tiny news company, pi
 
 * edit the `projectName` in webiny.root.js
 * set env-specific names for `MONGODB_NAME` (ex: contentapi-tnc-1234-prod) in .env.json
+* set env-specific names the `S3_BUCKET` value in api/.env.json (you can use the same values as MONGODB_NAME here)
 * update the name in package.json (though I need to confirm whether this is necessary)
 
 Then run the following commands, replacing `prod` with the desired environment (`dev` or `local` are other options):
