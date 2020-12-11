@@ -32,5 +32,5 @@ An example customer-specific environment used to deploy and run a client's webin
 
 To deploy: `yarn webiny deploy api --env=oaklyn`
 
-* GraphQL API: 
-* Personal Access Token: ``
+* GraphQL API: [https://djomoky4uky4c.cloudfront.net/graphql](https://djomoky4uky4c.cloudfront.net/graphql)
+* Personal Access Token: `3bef2afc707373384a344c158d0ed966acaf0ca52c7c5fab`
