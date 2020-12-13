@@ -24,7 +24,8 @@ To add a customer, setup a new env:
 
 1. Copy the `prod` env from `.env.json`, changing the label and mongodb name
 2. Copy the `prod` env from `api/.env.json`, changing the label and S3 bucket name
-3. Start the admin app in the new environment; I'm currently just editing the script entry for `start` in `apps/admin/package.json` to do this but would probably make more sense to do this better.
+3. Create a new `start` command in `apps/admin/package.json` for the new env; for example: `"start:oaklyn": "env-cmd -r .env.json --silent -e default webiny run start --env=oaklyn --stack=api"`
+4. Start the admin app in the new environment: `cd apps/admin && yarn start:<env>`
 
 ## contentapi-base-oaklyn
 
