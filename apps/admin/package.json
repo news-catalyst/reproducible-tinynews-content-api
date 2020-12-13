@@ -13,6 +13,7 @@
 	},
 	"scripts": {
 		"start": "env-cmd -r .env.json --silent -e default webiny run start --env=prod --stack=api",
+		"start:oaklyn": "env-cmd -r .env.json --silent -e default webiny run start --env=oaklyn --stack=api",
 		"build:dev": "env-cmd -r .env.json --silent -e default webiny run build --env=dev --stack=api",
 		"build:prod": "env-cmd -r .env.json --silent -e default webiny run build --env=prod --stack=api"
 	},
