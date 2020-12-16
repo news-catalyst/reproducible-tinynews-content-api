@@ -1,5 +1,6 @@
 // @ts-ignore
-import { withFields, withName, string, boolean } from "@webiny/commodo";
+import { withFields, withName, boolean } from "@webiny/commodo";
+import { i18nString } from "@webiny/api-i18n/fields";
 import { flow } from "lodash";
 import { date } from "commodo-fields-date";
 import { Context as APIContext } from "@webiny/graphql/types";
@@ -15,7 +16,7 @@ export default ({ context, createBase }: SiteMetadata) => {
     const SiteMetadata: any = flow(
         withName("SiteMetadata"),
         withFields({
-            data: string(),
+            data: i18nString({ context }),
             published: boolean({ value: false }),
             firstPublishedOn: date(),
             lastPublishedOn: date(),

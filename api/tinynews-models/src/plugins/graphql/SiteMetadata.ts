@@ -36,7 +36,7 @@ export default {
 
     type SiteMetadata {
         id: ID
-        data: String
+        data: I18NStringValue
         firstPublishedOn: DateTime
         lastPublishedOn: DateTime
         published: Boolean
@@ -44,7 +44,7 @@ export default {
 
     input SiteMetadataInput {
         id: ID
-        data: String
+        data: I18NStringValueInput
         firstPublishedOn: DateTime
         lastPublishedOn: DateTime
         published: Boolean
@@ -84,13 +84,11 @@ export default {
 
     type SiteMetadataMutation {
         createSiteMetadata(data: SiteMetadataInput!): SiteMetadataResponse
-
         updateSiteMetadata(id: ID!, data: SiteMetadataInput!): SiteMetadataResponse
-
         deleteSiteMetadata(id: ID!): SiteMetadataDeleteResponse
     }
-
   `,
+
   resolvers: {
     SiteMetadataQuery: {
         // With the generic resolvers, we also rely on the "hasScope" helper function from the
