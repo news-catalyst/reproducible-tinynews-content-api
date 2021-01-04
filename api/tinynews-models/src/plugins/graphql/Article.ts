@@ -6,6 +6,7 @@ import {
     resolveUpdate
 } from "@webiny/commodo-graphql";
 import { resolveList } from "./resolver";
+import resolveCreateFrom from "./resolveCreateFrom";
 
 const articleFetcher = ctx => ctx.models.Article;
 
@@ -178,6 +179,8 @@ export default {
     type ArticleMutation {
         createArticle(data: ArticleInput!): ArticleResponse
 
+        createArticleFrom(revision: ID!, data: ArticleInput!): ArticleResponse
+
         updateArticle(id: ID!, data: ArticleInput!): ArticleResponse
 
         deleteArticle(id: ID!): ArticleDeleteResponse
@@ -194,6 +197,7 @@ export default {
         // With the generic resolvers, we also rely on the "hasScope" helper function from the
         // "@webiny/api-security" package, in order to define the required security scopes (permissions).
         createArticle: hasScope("articles:create")(resolveCreate(articleFetcher)),
+        createArticleFrom: hasScope("articles:createFrom")(resolveCreateFrom(articleFetcher)),
         updateArticle: hasScope("articles:update")(resolveUpdate(articleFetcher)),
         deleteArticle: hasScope("articles:delete")(resolveDelete(articleFetcher))
     },
