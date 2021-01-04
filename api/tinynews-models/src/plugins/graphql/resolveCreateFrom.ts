@@ -11,6 +11,8 @@ export const resolveCreateFrom = ({ model }): GraphQLFieldResolver<any, any, Cms
 ) => {
     // setContextLocale(context, args.locale);
 
+    console.log("args:", args);
+
     const Model = context.models[model.modelId];
     const baseRevision = await Model.findById(args.revision);
 
@@ -23,6 +25,7 @@ export const resolveCreateFrom = ({ model }): GraphQLFieldResolver<any, any, Cms
     try {
         const newRevision = new Model();
 
+        console.log("model.fields:", model.fields);
         for (let i = 0; i < model.fields.length; i++) {
             const field = model.fields[i];
             if (baseRevision.getField(field.fieldId)) {
