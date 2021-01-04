@@ -81,6 +81,11 @@ export default {
 
     type Article {
         id: ID
+        version: Int
+        published: Boolean
+        latestVersion: Boolean
+        parent: ID
+        revisions: [Article]
         availableLocales: String
         headline: I18NStringValue
         lang: TestLocaleStringValueContainer
@@ -99,7 +104,6 @@ export default {
         updatedOn: DateTime
         firstPublishedOn: DateTime
         lastPublishedOn: DateTime
-        published: Boolean
         googleDocs: String
         docIDs: String
         category: Category
