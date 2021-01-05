@@ -1,6 +1,6 @@
 // @ts-ignore
 // import { withFields, withName, string, datetime, boolean, ref } from "@webiny/commodo";
-import { withFields, withHooks, withName, string, boolean, ref } from "@webiny/commodo";
+import { withFields, withHooks, withProps, withName, string, boolean, number, ref } from "@webiny/commodo";
 import { date } from "commodo-fields-date";
 import { flow } from "lodash";
 import { i18nString } from "@webiny/api-i18n/fields";
@@ -24,6 +24,10 @@ export default ({ context, createBase }: Article) => {
     const Article: any = flow(
         withName("Article"),
         withFields(() => ({
+            version: number(),
+            latestVersion: boolean(),
+            published: boolean({ value: false }),
+            parent: context.commodo.fields.id(),
             availableLocales: string(),
             headline: i18nString({ context }),
             lang: i18nString({context}),
@@ -40,7 +44,6 @@ export default ({ context, createBase }: Article) => {
             facebookDescription: i18nString({ context }),
             firstPublishedOn: date(),
             lastPublishedOn: date(),
-            published: boolean({ value: false }),
             googleDocs: string(),
             docIDs: string(),
             authors: ref({
@@ -58,13 +61,110 @@ export default ({ context, createBase }: Article) => {
                 using: context.models.Article2Tag
             })
         })),
+        withProps({
+            async getNextVersion() {
+                const revision = await Article.findOne({
+                    query: { parent: this.parent },
+                    sort: { version: -1 }
+                });
+
+                if (!revision) {
+                    return 1;
+                }
+
+                return revision.version + 1;
+            }
+        }),
         withHooks({
             async beforeCreate() {
+                // set the parent ID
+                if (!this.parent) {
+                    this.parent = this.id;
+                }
+
+                // check if an article already exists with this slug 
+                // only matters if the article has a differnet parent, which means it's not another version of this one
                 const existingArticle = await Article.findOne({ query: { slug: this.slug } });
-                if (existingArticle) {
+                if (existingArticle && existingArticle.parent !== this.parent) {
                     throw Error(`Article with slug "${this.slug}" already exists.`);
                 }
+
+                // generate the version ID
+                this.version = await this.getNextVersion();
+                this.latestVersion = true;
+
+                // When creating revisions number 2 and above, we need to load the previous latest version,
+                // and unmark it as latest, since the newly created on is now the latest revision.
+                if (this.version > 1) {
+                    const previousLatest = await Article.findOne({
+                        query: {
+                            parent: this.parent,
+                            latestVersion: true,
+                            version: { $ne: this.version }
+                        }
+                    });
+
+                    if (previousLatest) {
+                        const removeCallback = this.hook("afterCreate", async () => {
+                            removeCallback();
+                            previousLatest.latestVersion = false;
+                            await previousLatest.save();
+                        });
+                    }
+                }
             },
+            async beforePublish() {
+                // Deactivate previously published revision.
+                const publishedRev = await Article.findOne({
+                    query: { published: true, parent: this.parent }
+                });
+
+                if (publishedRev) {
+                    this.hook("afterPublish", async () => {
+                        publishedRev.published = false;
+                        await publishedRev.save();
+                    });
+                }
+            },
+            async beforeDelete() {
+                // If parent is being deleted, do not do anything. Both parent and children will be deleted anyways.
+                if (this.id === this.parent) {
+                    return;
+                }
+
+                if (this.version > 1 && this.latestVersion) {
+                    this.latestVersion = false;
+                    const removeCallback = this.hook("afterDelete", async () => {
+                        removeCallback();
+
+                        const previousLatest = await Article.findOne({
+                            query: {
+                                parent: this.parent
+                            },
+                            sort: {
+                                version: -1
+                            }
+                        });
+
+                        if (previousLatest) {
+                            previousLatest.latestVersion = true;
+                            await previousLatest.save();
+                        }
+                    });
+                }
+            },
+
+            async afterDelete() {
+                // If the deleted article is the parent article - delete its revisions.
+                if (this.id === this.parent) {
+                    // Delete all revisions
+                    const revisions = await Article.find({
+                        query: { parent: this.parent }
+                    });
+
+                    await Promise.all(revisions.map(rev => rev.delete()));
+                }
+            }
         })
     )(createBase());
     return Article;

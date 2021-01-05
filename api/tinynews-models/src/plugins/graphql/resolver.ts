@@ -1,11 +1,69 @@
 import parseBoolean from "@webiny/commodo-graphql/parseBoolean";
+import { WithFieldsError } from "@webiny/commodo";
+import { InvalidFieldsError } from "@webiny/commodo-graphql";
 import {
+  Response,
+  ErrorResponse,
     ListResponse,
     requiresTotalCount
 } from "@webiny/graphql";
 import { FieldResolver } from "@webiny/commodo-graphql/types";
 
 type GetModelType = (context: Object) => any; // TODO: add commodo type when available
+
+export const resolveCreateFrom = (getModel: GetModelType): FieldResolver => async (
+  root,
+  args,
+  context
+) => {
+  const Model: any = getModel(context);
+
+  const baseRevision = await Model.findById(args.revision);
+  if (!baseRevision) {
+      console.log("existing entry not found")
+      return new ErrorResponse({
+          code: "404",
+          message: "Existing entry not found",
+          data: args
+      });
+      // return entryNotFound(JSON.stringify(args.where));
+  }
+
+  // create a new version of the content
+  const newRevision = new Model();
+
+  // ensure the new version shares the same parent, slug and env (what's the env? think we're missing that one)
+  newRevision.parent = baseRevision.parent;
+  newRevision.slug = baseRevision.slug;
+  // newRevision.environment = baseRevision.environment;
+
+  // newRevision.availableLocales = baseRevision.availableLocales;
+  // newRevision.headline = baseRevision.headline;
+  // newRevision.content = baseRevision.content;
+
+  try {
+    // now overwrite fields with incoming data, which will never include parent
+      await newRevision.populate(args.data).save();
+  } catch (e) {
+      if (
+          e instanceof WithFieldsError &&
+          e.code === WithFieldsError.VALIDATION_FAILED_INVALID_FIELDS
+      ) {
+          const fieldError = InvalidFieldsError.from(e);
+          return new ErrorResponse({
+              code: fieldError.code || WithFieldsError.VALIDATION_FAILED_INVALID_FIELDS,
+              message: fieldError.message,
+              data: fieldError.data
+          });
+      }
+      return new ErrorResponse({
+          code: e.code,
+          message: e.message,
+          data: e.data
+      });
+  }
+  return new Response(newRevision);
+};
 
 export const resolveList = (getModel: GetModelType): FieldResolver => async (
   root,
