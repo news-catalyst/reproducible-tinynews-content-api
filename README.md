@@ -32,3 +32,7 @@ Open the URL returned from the second command, it will bring you the admin webin
 
 * Set up a Personal Access Token; be sure to copy this value somewhere safe.
 * Set up the site locales
+
+## Debugging
+
+* Cloudwatch logs for tinynews models part of the API: https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#logsV2:log-groups/log-group/$252Faws$252Flambda$252F65c22661_contentapi-base_api_oaklyn_apiTinynewsModels
