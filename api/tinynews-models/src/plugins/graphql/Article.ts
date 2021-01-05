@@ -5,8 +5,8 @@ import {
     resolveGet,
     resolveUpdate
 } from "@webiny/commodo-graphql";
-import { resolveList } from "./resolver";
-import resolveCreateFrom from "./resolveCreateFrom";
+import { resolveCreateFrom, resolveList } from "./resolver";
+// import resolveCreateFrom from "./resolveCreateFrom";
 
 const articleFetcher = ctx => ctx.models.Article;
 
