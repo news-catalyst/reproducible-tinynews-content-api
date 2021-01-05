@@ -77,14 +77,16 @@ export default ({ context, createBase }: Article) => {
         }),
         withHooks({
             async beforeCreate() {
-                const existingArticle = await Article.findOne({ query: { slug: this.slug } });
-                if (existingArticle) {
-                    throw Error(`Article with slug "${this.slug}" already exists.`);
-                }
-
                 // set the parent ID
                 if (!this.parent) {
                     this.parent = this.id;
+                }
+
+                // check if an article already exists with this slug 
+                // only matters if the article has a differnet parent, which means it's not another version of this one
+                const existingArticle = await Article.findOne({ query: { slug: this.slug } });
+                if (existingArticle && existingArticle.parent !== this.parent) {
+                    throw Error(`Article with slug "${this.slug}" already exists.`);
                 }
 
                 // generate the version ID
