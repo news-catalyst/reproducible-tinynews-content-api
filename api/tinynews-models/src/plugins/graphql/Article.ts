@@ -5,7 +5,7 @@ import {
     resolveGet,
     resolveUpdate
 } from "@webiny/commodo-graphql";
-import { resolveCreateFrom, resolveList } from "./resolver";
+import { resolveCreateFrom, resolveArticleList } from "./resolver";
 // import resolveCreateFrom from "./resolveCreateFrom";
 
 const articleFetcher = ctx => ctx.models.Article;
@@ -191,7 +191,7 @@ export default {
         // With the generic resolvers, we also rely on the "hasScope" helper function from the
         // "@webiny/api-security" package, in order to define the required security scopes (permissions).
         getArticle: hasScope("articles:get")(resolveGet(articleFetcher)),
-        listArticles: hasScope("articles:list")(resolveList(articleFetcher))
+        listArticles: hasScope("articles:list")(resolveArticleList(articleFetcher))
     },
     ArticleMutation: {
         // With the generic resolvers, we also rely on the "hasScope" helper function from the
