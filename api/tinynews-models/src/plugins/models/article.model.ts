@@ -1,6 +1,7 @@
 // @ts-ignore
 // import { withFields, withName, string, datetime, boolean, ref } from "@webiny/commodo";
 import { withFields, withHooks, withProps, withName, string, boolean, number, ref } from "@webiny/commodo";
+import mdbid from "mdbid";
 import { date } from "commodo-fields-date";
 import { flow } from "lodash";
 import { i18nString } from "@webiny/api-i18n/fields";
@@ -77,15 +78,21 @@ export default ({ context, createBase }: Article) => {
         }),
         withHooks({
             async beforeCreate() {
+                if (!this.id) {
+                    this.id = mdbid();
+                }
+
                 // set the parent ID
                 if (!this.parent) {
+                    console.log("setting parent to:", this.id);
                     this.parent = this.id;
                 }
+                    console.log("this.parent:", this.parent);
 
                 // check if an article already exists with this slug 
                 // only matters if the article has a differnet parent, which means it's not another version of this one
                 const existingArticle = await Article.findOne({ query: { slug: this.slug } });
-                if (existingArticle && existingArticle.parent !== this.parent) {
+                if (existingArticle && existingArticle.parent !== null && existingArticle.parent !== this.parent) {
                     throw Error(`Article with slug "${this.slug}" already exists.`);
                 }
 
