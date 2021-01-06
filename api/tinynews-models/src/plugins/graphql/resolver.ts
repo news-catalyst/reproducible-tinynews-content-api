@@ -66,6 +66,9 @@ export const resolveCreateFrom = (getModel: GetModelType): FieldResolver => asyn
   // ensure the new version shares the same parent, slug and env (what's the env? think we're missing that one)
   newRevision.parent = baseRevision.parent;
   newRevision.slug = baseRevision.slug;
+
+  newRevision.firstPublishedOn = baseRevision.firstPublishedOn;
+  newRevision.lastPublishedOn = baseRevision.lastPublishedOn;
   // newRevision.environment = baseRevision.environment;
 
   // newRevision.availableLocales = baseRevision.availableLocales;

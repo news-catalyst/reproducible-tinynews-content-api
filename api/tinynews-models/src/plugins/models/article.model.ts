@@ -16,7 +16,6 @@ export type Article = {
 
 export default ({ context, createBase }: Article) => {
     if (context && context.i18n) {
-        console.log("FOUND I18N ON CONTEXT!");
         console.log("default locale:", context.i18n.getDefaultLocale());
     } else {
         console.log(":( did not find i18n on article context :(");
@@ -71,7 +70,8 @@ export default ({ context, createBase }: Article) => {
                     if (value) {
                         // todo: determine if the instance is checking the existing database value or is just the incoming data
                         // depending on that, this might not work:
-                        if (instance.firstPublishedOn === undefined || instance.firstPublishedOn === undefined) {
+                        console.log("setting published dates; instance.firstPublishedOn: ", instance.firstPublishedOn, typeof(instance.firstPublishedOn))
+                        if (instance.firstPublishedOn === undefined || instance.firstPublishedOn === null) {
                             instance.firstPublishedOn = new Date();
                         }
                         instance.lastPublishedOn = new Date();
@@ -98,6 +98,13 @@ export default ({ context, createBase }: Article) => {
                             removeAfterSave();
                             await instance.hook("afterUnpublish");
                         });
+                    }
+                // if we're not changing the value
+                } else {
+                        console.log("published value:", value, "instance.published:", instance.published);
+                    // but it's still true
+                    if (value || instance.published) {
+                        instance.lastPublishedOn = new Date();
                     }
                 }
 
@@ -127,10 +134,9 @@ export default ({ context, createBase }: Article) => {
 
                 // set the parent ID
                 if (!this.parent) {
-                    console.log("setting parent to:", this.id);
                     this.parent = this.id;
                 }
-                    console.log("this.parent:", this.parent);
+                console.log("this.parent:", this.parent);
 
                 // check if an article already exists with this slug 
                 // only matters if the article has a differnet parent, which means it's not another version of this one
