@@ -11,37 +11,6 @@ import { FieldResolver } from "@webiny/commodo-graphql/types";
 
 type GetModelType = (context: Object) => any; // TODO: add commodo type when available
 
-// export const resolveCreate = (getModel: GetModelType): FieldResolver => async (
-//   root,
-//   args,
-//   context
-// ) => {
-//   const Model: any = getModel(context);
-//   const model = new Model();
-
-//   try {
-//       await model.populate(args.data).save();
-//   } catch (e) {
-//       if (
-//           e instanceof WithFieldsError &&
-//           e.code === WithFieldsError.VALIDATION_FAILED_INVALID_FIELDS
-//       ) {
-//           const fieldError = InvalidFieldsError.from(e);
-//           return new ErrorResponse({
-//               code: fieldError.code || WithFieldsError.VALIDATION_FAILED_INVALID_FIELDS,
-//               message: fieldError.message,
-//               data: fieldError.data
-//           });
-//       }
-//       return new ErrorResponse({
-//           code: e.code,
-//           message: e.message,
-//           data: e.data
-//       });
-//   }
-//   return new Response(model);
-// };
-
 export const resolveCreateFrom = (getModel: GetModelType): FieldResolver => async (
   root,
   args,
