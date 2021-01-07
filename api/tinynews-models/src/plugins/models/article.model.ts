@@ -1,6 +1,7 @@
 // @ts-ignore
 // import { withFields, withName, string, datetime, boolean, ref } from "@webiny/commodo";
-import { withFields, withHooks, withProps, withName, string, boolean, number, ref } from "@webiny/commodo";
+import { onSet, withFields, withHooks, withProps, withName, string, boolean, number, ref } from "@webiny/commodo";
+import mdbid from "mdbid";
 import { date } from "commodo-fields-date";
 import { flow } from "lodash";
 import { i18nString } from "@webiny/api-i18n/fields";
@@ -15,7 +16,6 @@ export type Article = {
 
 export default ({ context, createBase }: Article) => {
     if (context && context.i18n) {
-        console.log("FOUND I18N ON CONTEXT!");
         console.log("default locale:", context.i18n.getDefaultLocale());
     } else {
         console.log(":( did not find i18n on article context :(");
@@ -23,10 +23,10 @@ export default ({ context, createBase }: Article) => {
 
     const Article: any = flow(
         withName("Article"),
-        withFields(() => ({
+        withFields(instance => ({
+        // withFields(() => ({
             version: number(),
             latestVersion: boolean(),
-            published: boolean({ value: false }),
             parent: context.commodo.fields.id(),
             availableLocales: string(),
             headline: i18nString({ context }),
@@ -59,7 +59,51 @@ export default ({ context, createBase }: Article) => {
                 list: true,
                 instanceOf: context.models.Tag,
                 using: context.models.Article2Tag
-            })
+            }),
+            // published: boolean({ value: false }),
+            // implementation borrowed from webiny source code:
+            // . https://github.com/webiny/webiny-js/blob/bfb0d4606a160d771d3fa6b01775e7a94d6ec241/packages/api-form-builder/src/plugins/models/form.model.ts#L62-L91
+            published: onSet(value => {
+                // so if the published value is changing...
+                if (instance.published !== value) {
+                    // and we're setting it to true...
+                    if (value) {
+                        // todo: determine if the instance is checking the existing database value or is just the incoming data
+                        // depending on that, this might not work:
+                        console.log("setting published dates; instance.firstPublishedOn: ", instance.firstPublishedOn, typeof(instance.firstPublishedOn))
+                        if (instance.firstPublishedOn === undefined || instance.firstPublishedOn === null) {
+                            instance.firstPublishedOn = new Date();
+                        }
+                        instance.lastPublishedOn = new Date();
+
+                        const removeBeforeSave = instance.hook("beforeSave", async () => {
+                            removeBeforeSave();
+                            await instance.hook("beforePublish");
+                        });
+
+                        const removeAfterSave = instance.hook("afterSave", async () => {
+                            removeAfterSave();
+                            await instance.hook("afterPublish");
+                        });
+                    // if we're setting published from true to false (when does this happen?)
+                    } else {
+                        // i don't think we want to set any published dates to null... 
+                        // instance.lastPublishedOn = null;
+                        const removeBeforeSave = instance.hook("beforeSave", async () => {
+                            removeBeforeSave();
+                            await instance.hook("beforeUnpublish");
+                        });
+
+                        const removeAfterSave = instance.hook("afterSave", async () => {
+                            removeAfterSave();
+                            await instance.hook("afterUnpublish");
+                        });
+                    }
+                }
+
+                return value;
+            })(boolean()),
+
         })),
         withProps({
             async getNextVersion() {
@@ -77,15 +121,20 @@ export default ({ context, createBase }: Article) => {
         }),
         withHooks({
             async beforeCreate() {
+                if (!this.id) {
+                    this.id = mdbid();
+                }
+
                 // set the parent ID
                 if (!this.parent) {
                     this.parent = this.id;
                 }
+                console.log("this.parent:", this.parent);
 
                 // check if an article already exists with this slug 
                 // only matters if the article has a differnet parent, which means it's not another version of this one
                 const existingArticle = await Article.findOne({ query: { slug: this.slug } });
-                if (existingArticle && existingArticle.parent !== this.parent) {
+                if (existingArticle && existingArticle.parent !== null && existingArticle.parent !== this.parent) {
                     throw Error(`Article with slug "${this.slug}" already exists.`);
                 }
 
