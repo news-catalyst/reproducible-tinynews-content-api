@@ -68,6 +68,85 @@ export const resolveCreateFrom = (getModel: GetModelType): FieldResolver => asyn
   return new Response(newRevision);
 };
 
+export const resolvePublish = (getModel: GetModelType): FieldResolver => async (
+  root,
+  args,
+  context
+) => {
+  const Model: any = getModel(context);
+
+  const existingEntry = await Model.findById(args.revision);
+  if (!existingEntry) {
+      console.log("existing entry not found")
+      return new ErrorResponse({
+          code: "404",
+          message: "Existing entry not found",
+          data: args
+      });
+      // return entryNotFound(JSON.stringify(args.where));
+  }
+
+  if (existingEntry.published) {
+    return new ErrorResponse({
+      code: "CONTENT_MODEL_ENTRY_ALREADY_PUBLISHED",
+      message: "Cannot publish content model entry (already published)."
+    });
+  }
+
+  try {
+    existingEntry.published = true;
+    if (existingEntry.firstPublishedOn === null || existingEntry.firstPublishedOn === undefined) {
+      existingEntry.firstPublishedOn = new Date();
+    }
+    existingEntry.lastPublishedOn = new Date();
+    await existingEntry.save();
+    return new Response(existingEntry);
+  } catch (e) {
+    return new ErrorResponse({
+        code: e.code,
+        message: e.message,
+        data: e.data || null
+    });
+  }
+}
+
+export const resolveUnpublish = (getModel: GetModelType): FieldResolver => async (
+  root,
+  args,
+  context
+) => {
+  const Model: any = getModel(context);
+
+  const existingEntry = await Model.findById(args.revision);
+  if (!existingEntry) {
+      console.log("existing entry not found")
+      return new ErrorResponse({
+          code: "404",
+          message: "Existing entry not found",
+          data: args
+      });
+  }
+
+  if (!existingEntry.published) {
+    return new ErrorResponse({
+      code: "CONTENT_MODEL_ENTRY_NOT_PUBLISHED",
+      message: "Cannot unpublish content model entry (not published)."
+    });
+  }
+
+  try {
+    existingEntry.published = false;
+    await existingEntry.save();
+    return new Response(existingEntry);
+  } catch (e) {
+    return new ErrorResponse({
+        code: e.code,
+        message: e.message,
+        data: e.data || null
+    });
+  }
+}
+
 export const resolveList = (getModel: GetModelType): FieldResolver => async (
   root,
   args,
