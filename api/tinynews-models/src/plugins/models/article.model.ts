@@ -87,8 +87,8 @@ export default ({ context, createBase }: Article) => {
                         });
                     // if we're setting published from true to false (when does this happen?)
                     } else {
-                        // i don't think we want to set any published dates to null... todo confirm
-                        // instance.publishedOn = null;
+                        // i don't think we want to set any published dates to null... 
+                        // instance.lastPublishedOn = null;
                         const removeBeforeSave = instance.hook("beforeSave", async () => {
                             removeBeforeSave();
                             await instance.hook("beforeUnpublish");
@@ -98,13 +98,6 @@ export default ({ context, createBase }: Article) => {
                             removeAfterSave();
                             await instance.hook("afterUnpublish");
                         });
-                    }
-                // if we're not changing the value
-                } else {
-                        console.log("published value:", value, "instance.published:", instance.published);
-                    // but it's still true
-                    if (value || instance.published) {
-                        instance.lastPublishedOn = new Date();
                     }
                 }
 
