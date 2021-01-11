@@ -38,11 +38,6 @@ export const resolveCreateFrom = (getModel: GetModelType): FieldResolver => asyn
 
   newRevision.firstPublishedOn = baseRevision.firstPublishedOn;
   newRevision.lastPublishedOn = baseRevision.lastPublishedOn;
-  // newRevision.environment = baseRevision.environment;
-
-  // newRevision.availableLocales = baseRevision.availableLocales;
-  // newRevision.headline = baseRevision.headline;
-  // newRevision.content = baseRevision.content;
 
   try {
     // now overwrite fields with incoming data, which will never include parent
@@ -77,20 +72,11 @@ export const resolvePublish = (getModel: GetModelType): FieldResolver => async (
 
   const existingEntry = await Model.findById(args.revision);
   if (!existingEntry) {
-      console.log("existing entry not found")
       return new ErrorResponse({
           code: "404",
           message: "Existing entry not found",
           data: args
       });
-      // return entryNotFound(JSON.stringify(args.where));
-  }
-
-  if (existingEntry.published) {
-    return new ErrorResponse({
-      code: "CONTENT_MODEL_ENTRY_ALREADY_PUBLISHED",
-      message: "Cannot publish content model entry (already published)."
-    });
   }
 
   try {
@@ -125,13 +111,6 @@ export const resolveUnpublish = (getModel: GetModelType): FieldResolver => async
           message: "Existing entry not found",
           data: args
       });
-  }
-
-  if (!existingEntry.published) {
-    return new ErrorResponse({
-      code: "CONTENT_MODEL_ENTRY_NOT_PUBLISHED",
-      message: "Cannot unpublish content model entry (not published)."
-    });
   }
 
   try {
