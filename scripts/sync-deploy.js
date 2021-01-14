@@ -29,20 +29,24 @@ program
 
     const envBucket = `tinynewsplatform-environment-bucket-${env}`;
     // Create the parameters for calling createBucket
-    var bucketParams = {
+    var envBucketParams = {
       Bucket : envBucket,
       ACL: 'private'
     };
+    const stateBucket = `tinynewsplatform-state-bucket-${env}`;
+    var stateBucketParams = {
+      Bucket : stateBucket,
+      ACL: 'private'
+    };
 
-    const fyi1 = chalk.white.bold("creating bucket: " + envBucket);
-    console.log(fyi1);
+    console.log(chalk.white.bold("creating bucket: " + envBucket));
 
     // call S3 to create the bucket
-    s3.createBucket(bucketParams, function(err, data) {
+    s3.createBucket(envBucketParams, function(err, data) {
       if (err) {
-        console.log("Error", err);
+        console.log(chalk.red.bold("Error", err));
       } else {
-        console.log("Success", data.Location);
+        console.log(chalk.green.bold("Success", data.Location));
 
         // block public access on the bucket
         var params = {
@@ -56,8 +60,33 @@ program
         };
 
         s3.putPublicAccessBlock(params, function(err, data) {
-          if (err) console.log(err, err.stack); // an error occurred
-          else     console.log("Successfully put public access block", data);           // successful response
+          if (err) console.log(chalk.red.bold(err, err.stack)); // an error occurred
+          else     console.log(chalk.green.bold("Successfully put public access block on ", envBucket, data));
+        });
+      }
+    });
+
+    console.log(chalk.white.bold("creating bucket: " + stateBucket))
+    s3.createBucket(stateBucketParams, function(err, data) {
+      if (err) {
+        console.log(chalk.red.bold("Error", err));
+      } else {
+        console.log(chalk.green.bold("Success", data.Location));
+
+        // block public access on the bucket
+        var params = {
+          Bucket: stateBucket, /* required */
+          PublicAccessBlockConfiguration: { /* required */
+            BlockPublicAcls: true,
+            BlockPublicPolicy: true,
+            IgnorePublicAcls: true,
+            RestrictPublicBuckets: true
+          }
+        };
+
+        s3.putPublicAccessBlock(params, function(err, data) {
+          if (err) console.log(chalk.red.bold(err, err.stack)); // an error occurred
+          else     console.log(chalk.green.bold("Successfully put public access block on", stateBucket, data));           // successful response
         });
 
         const fyi2 = chalk.white.bold("blocking public access for bucket: " + envBucket);
