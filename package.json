@@ -23,7 +23,9 @@
 		"@webiny/serverless-aws-s3-object": "^4.12.1",
 		"@webiny/serverless-component": "^4.12.1",
 		"@webiny/serverless-files": "^4.12.1",
-		"@webiny/serverless-function": "^4.12.1"
+		"@webiny/serverless-function": "^4.12.1",
+		"boxen": "^5.0.0",
+		"commander": "^6.2.1"
 	},
 	"devDependencies": {
 		"@babel/cli": "^7.10.4",
@@ -72,6 +74,7 @@
 	},
 	"scripts": {
 		"postinstall": "node ./scripts/linkPackages.js",
-		"test": "jest --config jest.config.js"
+		"test": "jest --config jest.config.js",
+		"sync-deploy": "node scripts/sync-deploy.js"
 	}
 }
