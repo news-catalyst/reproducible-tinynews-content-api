@@ -81,7 +81,7 @@ program
         console.log(chalk.green.bold("Success", data.Location));
 
         // block public access on the bucket
-        var params = {
+        var pubAccessParams = {
           Bucket: envBucket, /* required */
           PublicAccessBlockConfiguration: { /* required */
             BlockPublicAcls: true,
@@ -91,9 +91,27 @@ program
           }
         };
 
-        s3.putPublicAccessBlock(params, function(err, data) {
+        s3.putPublicAccessBlock(pubAccessParams, function(err, data) {
           if (err) console.log(chalk.red.bold(err, err.stack)); // an error occurred
-          else     console.log(chalk.green.bold("Successfully put public access block on ", envBucket, data));
+          else     console.log(chalk.green.bold("Successfully put public access block on ", envBucket));
+        });
+
+        // upload env files
+        let putRootParams = {Bucket: envBucket, Key: 'root.env.json', Body: fs.readFileSync('.env.json') };
+        s3.putObject(putRootParams, function(err, data) {
+          if (err) {
+            console.log(err)
+          } else {
+            console.log('Successfully uploaded '+ putRootParams.Key +' to ' + envBucket);
+          }
+        });
+        let putApiParams = {Bucket: envBucket, Key: 'api.env.json', Body: fs.readFileSync('api/.env.json') };
+        s3.putObject(putApiParams, function(err, data) {
+          if (err) {
+            console.log(err)
+          } else {
+            console.log('Successfully uploaded '+ putApiParams.Key +' to ' + envBucket);
+          }
         });
       }
     });
@@ -118,7 +136,7 @@ program
 
         s3.putPublicAccessBlock(params, function(err, data) {
           if (err) console.log(chalk.red.bold(err, err.stack)); // an error occurred
-          else     console.log(chalk.green.bold("Successfully put public access block on", stateBucket, data));           // successful response
+          else     console.log(chalk.green.bold("Successfully put public access block on", stateBucket));           // successful response
         });
 
         uploadDir(".webiny", stateBucket);
@@ -141,7 +159,6 @@ program
       backgroundColor: "#555555"
     };
     const msgBox = boxen( greeting, boxenOptions );
-    console.log(msgBox);
 
     const envBucket = `tinynewsplatform-environment-bucket-${env}`;
     // Create the parameters for calling createBucket
@@ -149,19 +166,25 @@ program
       Bucket: envBucket,
       Key: 'root.env.json'
     };
+
     var apiParams = {
       Bucket: envBucket,
       Key: 'api.env.json'
     };
+
     s3.getObject(rootParams).promise().then((data) => {
-      writeFile('./.env.json', data.Body)
+      fs.writeFile('./.env.json', data.Body, function(err, result) {
+        if(err) console.log('error', err);
+      });
       console.log('./.env.json file downloaded successfully')
     }).catch((err) => {
         throw err
     })
 
     s3.getObject(apiParams).promise().then((data) => {
-      writeFile('api/.env.json', data.Body)
+      fs.writeFile('api/.env.json', data.Body, function(err, result) {
+        if(err) console.log('error', err);
+      });
       console.log('api/.env.json file downloaded successfully')
     }).catch((err) => {
         throw err
@@ -183,19 +206,19 @@ program
           Bucket: stateParams.Bucket,
           Key: key
         }
-    
-        s3.getObject(fileParams, function(err, fileContents){
-          if (err) {
-            callback(err);
-          } else {
+
+        console.log(fileParams)
+        s3.getObject(fileParams).promise().then((data) => {
             // Read the file
-            var localFilename = '.webiny/' + key;
-            console.log(' - saving ' + localFilename);
-            writeFile(localFilename, data.Body)
-            console.log(' - done ' + localFilename);
+            var localFilename = path.join('.webiny', key);
+            console.log(' - saving ' + key + ' to ' + localFilename);
+            fs.writeFile(localFilename, data.Body, function(err, result) {
+              if(err) console.log('error', err);
+            });
             callback();
-          }
-        });
+        }).catch((err) => {
+            throw err
+        })
 
       }, function(err) {
         if (err) {
