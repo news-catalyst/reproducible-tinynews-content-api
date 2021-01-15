@@ -11,8 +11,44 @@ var fs = require('fs');
 var async = require('async');
 var path = require("path");
 
+// to run the `yarn webiny deploy` command
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
+
 const chalk = require("chalk");
 const boxen = require("boxen");
+
+async function uploadEnvFiles(envBucket, cb) {
+  // upload env files
+  let putRootParams = {Bucket: envBucket, Key: 'root.env.json', Body: fs.readFileSync('.env.json') };
+  s3.putObject(putRootParams, function(err, data) {
+    if (err) {
+      console.log(err)
+    } else {
+      console.log('Successfully uploaded '+ putRootParams.Key +' to ' + envBucket);
+    }
+  });
+  let putApiParams = {Bucket: envBucket, Key: 'api.env.json', Body: fs.readFileSync('api/.env.json') };
+  s3.putObject(putApiParams, function(err, data) {
+    if (err) {
+      console.log(err)
+    } else {
+      cb(null, "uploadEnvFiles: api.env.json");
+      console.log('Successfully uploaded '+ putApiParams.Key +' to ' + envBucket);
+    }
+  });
+}
+
+// handles the yarn deploy
+async function yarnWebiny(env, cb) {
+  const cmd = 'yarn webiny deploy api --env=' + env;
+  console.log("cmd: ", cmd);
+  // const { stdout, stderr } = await exec(cmd);
+  // console.log('stdout:', stdout);
+  // console.log('stderr:', stderr);
+
+  cb(null, "yarn webiny deploy")
+}
 
 // handles uploading `.webiny` to state bucket
 // thanks to https://stackoverflow.com/a/46213474
@@ -96,23 +132,7 @@ program
           else     console.log(chalk.green.bold("Successfully put public access block on ", envBucket));
         });
 
-        // upload env files
-        let putRootParams = {Bucket: envBucket, Key: 'root.env.json', Body: fs.readFileSync('.env.json') };
-        s3.putObject(putRootParams, function(err, data) {
-          if (err) {
-            console.log(err)
-          } else {
-            console.log('Successfully uploaded '+ putRootParams.Key +' to ' + envBucket);
-          }
-        });
-        let putApiParams = {Bucket: envBucket, Key: 'api.env.json', Body: fs.readFileSync('api/.env.json') };
-        s3.putObject(putApiParams, function(err, data) {
-          if (err) {
-            console.log(err)
-          } else {
-            console.log('Successfully uploaded '+ putApiParams.Key +' to ' + envBucket);
-          }
-        });
+        uploadEnvFiles(envBucket);
       }
     });
 
@@ -195,6 +215,7 @@ program
       Bucket: stateBucket
     };
 
+    // recursive download thanks gto https://gist.github.com/matthewdfuller/abcc38d23e2c73b1ee94
     s3.listObjects(stateParams, function(err, data){
       if (err) return console.log(err);
     
@@ -224,7 +245,27 @@ program
         if (err) {
           console.log('Failed: ' + err);
         } else {
-          console.log('Finished');
+          console.log(chalk.cyan.bold("Env and state files synced! Running API deploy for " + env + " now..."));
+
+          async.series([
+            function(callback) {
+              yarnWebiny(env, callback)
+            },
+            function(callback) {
+              uploadEnvFiles(envBucket, callback);
+            },
+            function(callback) {
+              uploadDir(".webiny", stateBucket, callback);
+            }
+          ], function(err, results) {
+            if (err) {
+              console.log(chalk.red.bold(err));
+            } else {
+              console.log("Done running async series function: ", results);
+              console.log(chalk.cyan.bold("Deploy and data sync finished!"));
+            }
+          });
+          
         }
       });
     });
