@@ -43,9 +43,9 @@ async function uploadEnvFiles(envBucket, cb) {
 async function yarnWebiny(env, cb) {
   const cmd = 'yarn webiny deploy api --env=' + env;
   console.log("cmd: ", cmd);
-  // const { stdout, stderr } = await exec(cmd);
-  // console.log('stdout:', stdout);
-  // console.log('stderr:', stderr);
+  const { stdout, stderr } = await exec(cmd);
+  console.log('stdout:', stdout);
+  console.log('stderr:', stderr);
 
   cb(null, "yarn webiny deploy")
 }
