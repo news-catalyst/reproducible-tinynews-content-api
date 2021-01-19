@@ -24,7 +24,7 @@ const localWebinyDir = ".webiny";
 async function doesBucketExist(bucketName) {
   var flag = false;
   try {
-    // console.log("data: ", data);
+    console.log(bucketName, "data: ", data);
     flag = true;
     // console.log( `Bucket "${bucketName}" exists`);
   }
@@ -128,6 +128,12 @@ program
       ACL: 'private'
     };
 
+    const contentBucket = `tinynewsplatform-content-bucket-${env}`;
+    var contentBucketParams = {
+      Bucket : contentBucket,
+      ACL: 'public-read'
+    };
+
     doesBucketExist(envBucket).then((data) => {
       if (data) {
         console.log(chalk.cyan.bold("✔ " + envBucket + " already exists."))
@@ -217,7 +223,33 @@ program
         });
       }
     }).catch((err) => {
+      console.log(chalk.red.bold(err, err.stack));
     });
+
+
+    doesBucketExist(contentBucket).then((data) => {
+      if (data) {
+        console.log(chalk.cyan.bold("✔ " + contentBucket + " already exists."))
+      } else {
+        // call S3 to create the bucket
+        s3.createBucket(contentBucketParams, function(err, data) {
+          console.log(chalk.white.bold("👷‍♀️ Creating bucket: " + contentBucket))
+          if (err) {
+            if (err.statusCode == 409) {
+              console.log(chalk.cyan.bold("🪞 Nothing to do here, the bucket already exists"))
+            } else {
+              console.log(chalk.red.bold("🤬 Error", err));
+            }
+          } else {
+            console.log(chalk.green.bold("🪣 Successfully created the bucket."));
+          }
+        });
+      }
+
+    }).catch((err) => {
+      console.log("error: ", err);
+      throw err
+    })
 });
 
 
