@@ -133,7 +133,7 @@ export default {
         published: Boolean
         googleDocs: String
         docIDs: String
-        category: RefInput
+        category: RefInput!
         authors: [RefInput]
         tags: [RefInput]
     }
