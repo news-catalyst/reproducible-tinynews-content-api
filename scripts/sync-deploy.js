@@ -125,27 +125,58 @@ program
 
         const drive = google.drive({ version: "v3", auth });
 
+        // var topLevelFolderId = '1XuETkXgocX8WRCSez2vkGzt52UEbRMrm';
         var orgFolderMetadata = {
           'name': org,
+          // parents: [topLevelFolderId],
           'mimeType': 'application/vnd.google-apps.folder'
         };
 
         drive.files.create({
           resource: orgFolderMetadata,
-          fields: 'id'
+          fields: '*'
         }, function (err, file) {
           if (err) {
             // Handle error
             console.error(err);
           } else {
-            var parentFolderId = file.id
-            console.log(chalk.green.bold("🗄️ Created folder for organization ", org, " with id: ", parentFolderId));
+            console.log(file);
+            var parentFolderId = file.data.id
 
-            var folderId = '0BwwA4oUTeiV1TGRPeTVjaWRDY1E';
+            // TODO figure out best to configure permissions
+            drive.permissions.create({
+                resource: {
+                    'type': 'user',
+                    'role': 'writer',
+                    'emailAddress': 'jacqui@newscatalyst.org'
+                },
+                fileId: parentFolderId,
+                fields: 'id',
+                }, function(err, res) {
+                    if (err) {
+                    // Handle error
+                    console.log(err);
+                } else {
+                    console.log('Granted write permissions to jacqui@newscatalyst.org with permission ID: ', res.data.id)
+                }
+            });
+
+            // drive.files.list({}, (err, res) => {
+            //   if (err) throw err;
+            //   const files = res.data.files;
+            //   if (files.length) {
+            //   files.map((file) => {
+            //     console.log(file);
+            //   });
+            //   } else {
+            //     console.log('No files found');
+            //   }
+            // });
+            console.log(chalk.green.bold("🗄️ Created folder for organization", org, "with id:", parentFolderId));
 
             var articleFolderMetadata = {
               'name': 'articles',
-              parents: [folderId],
+              parents: [parentFolderId],
               'mimeType': 'application/vnd.google-apps.folder'
             };
 
@@ -157,13 +188,33 @@ program
                 // Handle error
                 console.log(chalk.red.bold("🤬 Error creating articles folder: ", err));
               } else {
-                console.log(chalk.green.bold('📁 Created articles folder within ', org, ' with id: ', file.id));
+                var articleFolderId = file.data.id;
+                console.log(chalk.green.bold('📁 Created articles folder within ', org, ' with id: ', articleFolderId));
+
+                var articleMetadata = {
+                  'name': 'Article TK',
+                  parents: [articleFolderId],
+                  'mimeType': 'application/vnd.google-apps.document'
+                };
+
+                drive.files.create({
+                  resource: articleMetadata,
+                  fields: 'id'
+                }, function (err, file) {
+                  if (err) {
+                    // Handle error
+                    console.log(chalk.red.bold("🤬 Error creating test article document: ", err));
+                  } else {
+                    console.log(chalk.green.bold('🗒️ Created test article document (for configuring the add-on) with id: ', file.data.id));
+                  }
+                });
+
               }
             });
 
             var pageFolderMetadata = {
               'name': 'pages',
-              parents: [folderId],
+              parents: [parentFolderId],
               'mimeType': 'application/vnd.google-apps.folder'
             };
 
@@ -175,7 +226,7 @@ program
                 // Handle error
                 console.log(chalk.red.bold("🤬 Error creating pages folder: ", err));
               } else {
-                console.log(chalk.green.bold('📁 Created pages folder within ', org, ' with id: ', file.id));
+                console.log(chalk.green.bold('📁 Created pages folder within ', org, ' with id: ', file.data.id));
               }
             });
           }
