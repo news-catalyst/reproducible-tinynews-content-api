@@ -100,9 +100,9 @@ const uploadDir = function(s3Path, bucketName) {
 };
 
 program
-    .command("drive <org>")
+    .command("drive <org> [emails...]")
     .description("creates an organization's space in google drive for articles and pages")
-    .action((org) => {
+    .action((org, emails) => {
         const greeting = chalk.white.bold("sync-deploy setting up google drive for org: " + org);
 
         const boxenOptions = {
@@ -125,112 +125,119 @@ program
 
         const drive = google.drive({ version: "v3", auth });
 
-        // var topLevelFolderId = '1XuETkXgocX8WRCSez2vkGzt52UEbRMrm';
-        var orgFolderMetadata = {
-          'name': org,
-          // parents: [topLevelFolderId],
-          'mimeType': 'application/vnd.google-apps.folder'
-        };
+        var topLevelFolderId = '1XuETkXgocX8WRCSez2vkGzt52UEbRMrm';
+        drive.files.get({fileId: topLevelFolderId, supportsAllDrives: true, fields: "id,name,webViewLink"}, (err, res) => {
+          if (err) throw err;
+          console.log(chalk.cyan.bold('Creating a folder for org: ' + org));
 
-        drive.files.create({
-          resource: orgFolderMetadata,
-          fields: '*'
-        }, function (err, file) {
-          if (err) {
-            // Handle error
-            console.error(err);
-          } else {
-            console.log(file);
-            var parentFolderId = file.data.id
+          // create the folder here
+          var orgFolderMetadata = {
+            'name': org,
+            parents: [topLevelFolderId],
+            'mimeType': 'application/vnd.google-apps.folder',
+          };
 
-            // TODO figure out best to configure permissions
-            drive.permissions.create({
-                resource: {
-                    'type': 'user',
-                    'role': 'writer',
-                    'emailAddress': 'jacqui@newscatalyst.org'
-                },
-                fileId: parentFolderId,
-                fields: 'id',
-                }, function(err, res) {
-                    if (err) {
-                    // Handle error
-                    console.log(err);
-                } else {
-                    console.log('Granted write permissions to jacqui@newscatalyst.org with permission ID: ', res.data.id)
-                }
-            });
+          drive.files.create({
+            resource: orgFolderMetadata,
+            fields: '*',
+            supportsAllDrives: true
+          }, function (err, file) {
+            if (err) {
+              // Handle error
+              console.error(chalk.red.bold(err));
+            } else {
+              console.log(chalk.green.bold(file.data.name + " folder created: " + file.data.webViewLink));
+              webLink = file.data.webViewLink;
 
-            // drive.files.list({}, (err, res) => {
-            //   if (err) throw err;
-            //   const files = res.data.files;
-            //   if (files.length) {
-            //   files.map((file) => {
-            //     console.log(file);
-            //   });
-            //   } else {
-            //     console.log('No files found');
-            //   }
-            // });
-            console.log(chalk.green.bold("🗄️ Created folder for organization", org, "with id:", parentFolderId));
+              var parentFolderId = file.data.id
 
-            var articleFolderMetadata = {
-              'name': 'articles',
-              parents: [parentFolderId],
-              'mimeType': 'application/vnd.google-apps.folder'
-            };
+              if (emails) {
+                emails.forEach(function (email) {
+                  console.log(chalk.cyan.bold("Granting permission to " + email));
 
-            drive.files.create({
-              resource: articleFolderMetadata,
-              fields: 'id'
-            }, function (err, file) {
-              if (err) {
-                // Handle error
-                console.log(chalk.red.bold("🤬 Error creating articles folder: ", err));
-              } else {
-                var articleFolderId = file.data.id;
-                console.log(chalk.green.bold('📁 Created articles folder within ', org, ' with id: ', articleFolderId));
-
-                var articleMetadata = {
-                  'name': 'Article TK',
-                  parents: [articleFolderId],
-                  'mimeType': 'application/vnd.google-apps.document'
-                };
-
-                drive.files.create({
-                  resource: articleMetadata,
-                  fields: 'id'
-                }, function (err, file) {
-                  if (err) {
-                    // Handle error
-                    console.log(chalk.red.bold("🤬 Error creating test article document: ", err));
-                  } else {
-                    console.log(chalk.green.bold('🗒️ Created test article document (for configuring the add-on) with id: ', file.data.id));
-                  }
+                  drive.permissions.create({
+                    resource: {
+                        'type': 'user',
+                        'role': 'writer',
+                        'emailAddress': email
+                    },
+                    supportsAllDrives: true,
+                    fileId: parentFolderId,
+                    fields: 'id',
+                    }, function(err, res) {
+                        if (err) {
+                        // Handle error
+                        console.log(chalk.red.bold("🤬 Error granting permissions to " + email + ":", err));
+                    } else {
+                        console.log(chalk.green('✅ Successfully granted permission to ' + email));
+                    }
+                  });
                 });
-
               }
-            });
 
-            var pageFolderMetadata = {
-              'name': 'pages',
-              parents: [parentFolderId],
-              'mimeType': 'application/vnd.google-apps.folder'
-            };
+              console.log(chalk.green.bold("🗄️ Created folder for organization", org, "with id:", parentFolderId));
 
-            drive.files.create({
-              resource: pageFolderMetadata,
-              fields: 'id'
-            }, function (err, file) {
-              if (err) {
-                // Handle error
-                console.log(chalk.red.bold("🤬 Error creating pages folder: ", err));
-              } else {
-                console.log(chalk.green.bold('📁 Created pages folder within ', org, ' with id: ', file.data.id));
-              }
-            });
-          }
-        });
+              var articleFolderMetadata = {
+                'name': 'articles',
+                parents: [parentFolderId],
+                'mimeType': 'application/vnd.google-apps.folder'
+              };
+
+              drive.files.create({
+                resource: articleFolderMetadata,
+                supportsAllDrives: true,
+                fields: 'id'
+              }, function (err, file) {
+                if (err) {
+                  // Handle error
+                  console.log(chalk.red.bold("🤬 Error creating articles folder: ", err));
+                } else {
+                  var articleFolderId = file.data.id;
+                  console.log(chalk.green.bold('📁 Created articles folder within', org, 'with id:', articleFolderId));
+
+                  var articleMetadata = {
+                    'name': 'Article TK',
+                    parents: [articleFolderId],
+                    'mimeType': 'application/vnd.google-apps.document'
+                  };
+
+                  drive.files.create({
+                    resource: articleMetadata,
+                    supportsAllDrives: true,
+                    fields: 'id'
+                  }, function (err, file) {
+                    if (err) {
+                      // Handle error
+                      console.log(chalk.red.bold("🤬 Error creating test article document: ", err));
+                    } else {
+                      console.log(chalk.green.bold('🗒️ Created test article document (for configuring the add-on) with id: ', file.data.id));
+                    }
+                  });
+
+                }
+              });
+
+              var pageFolderMetadata = {
+                'name': 'pages',
+                parents: [parentFolderId],
+                'mimeType': 'application/vnd.google-apps.folder'
+              };
+
+              drive.files.create({
+                resource: pageFolderMetadata,
+                supportsAllDrives: true,
+                fields: 'id'
+              }, function (err, file) {
+                if (err) {
+                  // Handle error
+                  console.log(chalk.red.bold("🤬 Error creating pages folder: ", err));
+                } else {
+                  console.log(chalk.green.bold('📁 Created pages folder within', org, 'with id:', file.data.id));
+                }
+              });
+            }
+          });
+        })
     });
 
 program
