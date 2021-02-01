@@ -25,7 +25,8 @@
 		"@webiny/serverless-files": "^4.12.1",
 		"@webiny/serverless-function": "^4.12.1",
 		"boxen": "^5.0.0",
-		"commander": "^6.2.1"
+		"commander": "^6.2.1",
+		"googleapis": "^67.0.0"
 	},
 	"devDependencies": {
 		"@babel/cli": "^7.10.4",

@@ -100,6 +100,147 @@ const uploadDir = function(s3Path, bucketName) {
 };
 
 program
+    .command("drive <org> [emails...]")
+    .description("creates an organization's space in google drive for articles and pages")
+    .action((org, emails) => {
+        const greeting = chalk.white.bold("sync-deploy setting up google drive for org: " + org);
+
+        const boxenOptions = {
+            padding: 1,
+            margin: 1,
+            borderStyle: "round",
+            borderColor: "blue",
+            backgroundColor: "#555555"
+        };
+        const msgBox = boxen(greeting, boxenOptions);
+        console.log(msgBox);
+
+        const { google } = require("googleapis");
+
+        const credentials = require("./credentials.json");
+
+        const scopes = ["https://www.googleapis.com/auth/drive"];
+
+        const auth = new google.auth.JWT(credentials.client_email, null, credentials.private_key, scopes);
+
+        const drive = google.drive({ version: "v3", auth });
+
+        var topLevelFolderId = '1XuETkXgocX8WRCSez2vkGzt52UEbRMrm';
+        drive.files.get({fileId: topLevelFolderId, supportsAllDrives: true, fields: "id,name,webViewLink"}, (err, res) => {
+          if (err) throw err;
+          console.log(chalk.cyan.bold('Creating a folder for org: ' + org));
+
+          // create the folder here
+          var orgFolderMetadata = {
+            'name': org,
+            parents: [topLevelFolderId],
+            'mimeType': 'application/vnd.google-apps.folder',
+          };
+
+          drive.files.create({
+            resource: orgFolderMetadata,
+            fields: '*',
+            supportsAllDrives: true
+          }, function (err, file) {
+            if (err) {
+              // Handle error
+              console.error(chalk.red.bold(err));
+            } else {
+              console.log(chalk.green.bold(file.data.name + " folder created: " + file.data.webViewLink));
+              webLink = file.data.webViewLink;
+
+              var parentFolderId = file.data.id
+
+              if (emails) {
+                emails.forEach(function (email) {
+                  console.log(chalk.cyan.bold("Granting permission to " + email));
+
+                  drive.permissions.create({
+                    resource: {
+                        'type': 'user',
+                        'role': 'writer',
+                        'emailAddress': email
+                    },
+                    supportsAllDrives: true,
+                    fileId: parentFolderId,
+                    fields: 'id',
+                    }, function(err, res) {
+                        if (err) {
+                        // Handle error
+                        console.log(chalk.red.bold("🤬 Error granting permissions to " + email + ":", err));
+                    } else {
+                        console.log(chalk.green('✅ Successfully granted permission to ' + email));
+                    }
+                  });
+                });
+              }
+
+              console.log(chalk.green.bold("🗄️ Created folder for organization", org, "with id:", parentFolderId));
+
+              var articleFolderMetadata = {
+                'name': 'articles',
+                parents: [parentFolderId],
+                'mimeType': 'application/vnd.google-apps.folder'
+              };
+
+              drive.files.create({
+                resource: articleFolderMetadata,
+                supportsAllDrives: true,
+                fields: 'id'
+              }, function (err, file) {
+                if (err) {
+                  // Handle error
+                  console.log(chalk.red.bold("🤬 Error creating articles folder: ", err));
+                } else {
+                  var articleFolderId = file.data.id;
+                  console.log(chalk.green.bold('📁 Created articles folder within', org, 'with id:', articleFolderId));
+
+                  var articleMetadata = {
+                    'name': 'Article TK',
+                    parents: [articleFolderId],
+                    'mimeType': 'application/vnd.google-apps.document'
+                  };
+
+                  drive.files.create({
+                    resource: articleMetadata,
+                    supportsAllDrives: true,
+                    fields: 'id'
+                  }, function (err, file) {
+                    if (err) {
+                      // Handle error
+                      console.log(chalk.red.bold("🤬 Error creating test article document: ", err));
+                    } else {
+                      console.log(chalk.green.bold('🗒️ Created test article document (for configuring the add-on) with id: ', file.data.id));
+                    }
+                  });
+
+                }
+              });
+
+              var pageFolderMetadata = {
+                'name': 'pages',
+                parents: [parentFolderId],
+                'mimeType': 'application/vnd.google-apps.folder'
+              };
+
+              drive.files.create({
+                resource: pageFolderMetadata,
+                supportsAllDrives: true,
+                fields: 'id'
+              }, function (err, file) {
+                if (err) {
+                  // Handle error
+                  console.log(chalk.red.bold("🤬 Error creating pages folder: ", err));
+                } else {
+                  console.log(chalk.green.bold('📁 Created pages folder within', org, 'with id:', file.data.id));
+                }
+              });
+            }
+          });
+        })
+    });
+
+program
  .command('setup <env>')
  .description('creates infrastructure s3 buckets, uploads webiny env and state files')
  .action((env) => {
